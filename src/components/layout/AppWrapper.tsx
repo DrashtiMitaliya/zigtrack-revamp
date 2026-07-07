@@ -10,7 +10,7 @@ export const AppWrapper: React.FC<AppWrapperProps> = ({ children }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
   return (
-    <div className="flex h-screen bg-[#F5F7FA] text-[#141414] font-body overflow-hidden">
+    <div className="flex h-screen bg-[#F5F7FA] dark:bg-[#1a1d27] text-[#141414] dark:text-[#e8eaf0] font-body overflow-hidden">
       {/* Mobile overlay — tap to close sidebar */}
       {mobileSidebarOpen && (
         <div

@@ -59,7 +59,7 @@ const EditRow: React.FC<EditRowProps> = ({ entry }) => {
   } = useAppContext()
 
   return (
-    <div className="bg-white rounded-2xl border border-[#1490FE]/40 p-4 sm:p-5 shadow-md space-y-4 transition-all">
+    <div className="bg-white dark:bg-[#242838] rounded-2xl border border-[#1490FE]/40 dark:border-[#1490FE]/30 p-4 sm:p-5 shadow-md dark:shadow-[0_4px_16px_rgba(0,0,0,0.3)] space-y-4 transition-all">
       <div className="grid grid-cols-12 gap-3 sm:gap-4 items-start">
         {/* Description */}
         <div className="col-span-12 sm:col-span-6 space-y-1">
@@ -67,7 +67,7 @@ const EditRow: React.FC<EditRowProps> = ({ entry }) => {
             id={`edit-desc-${entry.id}`}
             value={editDescription}
             onChange={e => setEditDescription(e.target.value)}
-            className="w-full text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl p-3 outline-none focus:border-[#1490FE]/40 focus:bg-white transition-all resize-none font-medium leading-relaxed"
+            className="w-full text-xs text-slate-700 dark:text-[#c4cade] bg-slate-50 dark:bg-[#2e3347] border border-slate-200 dark:border-[#3a4060] rounded-xl p-3 outline-none focus:border-[#1490FE]/40 focus:bg-white dark:focus:bg-[#2e3347] transition-all resize-none font-medium leading-relaxed placeholder:text-slate-400 dark:placeholder:text-[#6b7595]"
             rows={3}
             maxLength={2000}
             placeholder="Describe your task details (max 2000 chars) *"
@@ -87,7 +87,7 @@ const EditRow: React.FC<EditRowProps> = ({ entry }) => {
 
         {/* Time range using custom TimePicker */}
         <div className="col-span-6 sm:col-span-2">
-          <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 p-1.5 rounded-xl">
+          <div className="flex items-center gap-1 bg-slate-50 dark:bg-[#2e3347] border border-slate-200 dark:border-[#3a4060] p-1.5 rounded-xl">
             <TimePicker
               value={editStartTime}
               onChange={setEditStartTime}
@@ -107,7 +107,7 @@ const EditRow: React.FC<EditRowProps> = ({ entry }) => {
 
         {/* Duration */}
         <div className="col-span-6 sm:col-span-1 text-center pt-2">
-          <span className="text-sm font-black text-slate-800 font-mono bg-slate-50 border border-slate-100 px-2 py-1 rounded-lg">
+          <span className="text-sm font-black text-slate-800 dark:text-[#e8eaf0] font-mono bg-slate-50 dark:bg-[#2e3347] border border-slate-100 dark:border-[#3a4060] px-2 py-1 rounded-lg">
             {editDuration}
           </span>
           <p className="text-[9px] text-slate-400 font-semibold mt-1">Duration</p>
@@ -137,7 +137,7 @@ const EditRow: React.FC<EditRowProps> = ({ entry }) => {
       </div>
 
       {/* Footer: ticket + type */}
-      <div className="flex flex-wrap items-center justify-between border-t border-slate-100 pt-3 gap-3">
+      <div className="flex flex-wrap items-center justify-between border-t border-slate-100 dark:border-[#3a4060] pt-3 gap-3">
         <div className="flex flex-wrap items-center gap-3">
           {/* Ticket select */}
           <div className="relative w-36">
@@ -171,7 +171,7 @@ const EditRow: React.FC<EditRowProps> = ({ entry }) => {
           )}
 
           {/* Entry type toggle */}
-          <div className="flex bg-slate-100 rounded-xl p-0.5" role="radiogroup" aria-label="Entry type">
+          <div className="flex bg-slate-100 dark:bg-[#2e3347] rounded-xl p-0.5" role="radiogroup" aria-label="Entry type">
             {(['Task', 'Manual'] as const).map(t => (
               <button
                 key={t}
@@ -180,9 +180,9 @@ const EditRow: React.FC<EditRowProps> = ({ entry }) => {
                 aria-checked={editType === t}
                 onClick={() => setEditType(t)}
                 className={`text-[10px] font-bold px-3 py-1 rounded-lg transition-all ${editType === t
-                    ? 'bg-white text-slate-800 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
-                  }`}
+                  ? 'bg-white dark:bg-[#3a4060] text-slate-800 dark:text-[#e8eaf0] shadow-sm'
+                  : 'text-slate-500 dark:text-[#8892aa] hover:text-slate-800 dark:hover:text-[#e8eaf0]'
+                }`}
               >
                 {t}
               </button>
@@ -206,7 +206,7 @@ const DisplayRow: React.FC<DisplayRowProps> = ({ entry }) => {
       {/* Description */}
       <div className="col-span-12 sm:col-span-6 flex items-start gap-3">
         <div className="space-y-2 min-w-0">
-          <p className="text-[13px] text-slate-700 leading-relaxed font-medium">
+          <p className="text-[13px] text-slate-700 dark:text-[#c4cade] leading-relaxed font-medium">
             {entry.description}
           </p>
           <div className="flex flex-wrap items-center gap-1.5">
@@ -230,14 +230,14 @@ const DisplayRow: React.FC<DisplayRowProps> = ({ entry }) => {
 
       {/* Time range */}
       <div className="hidden sm:block col-span-2 text-center">
-        <span className="text-[11px] font-mono text-slate-600 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl inline-block shadow-sm font-semibold">
+        <span className="text-[11px] font-mono text-slate-600 dark:text-[#a8b0c8] bg-slate-50 dark:bg-[#2e3347] border border-slate-200 dark:border-[#3a4060] px-2.5 py-1 rounded-xl inline-block shadow-sm font-semibold">
           {entry.timeRange}
         </span>
       </div>
 
       {/* Duration */}
       <div className="col-span-6 sm:col-span-1 text-center">
-        <span className="text-sm font-black text-slate-800 font-mono">{entry.duration}</span>
+        <span className="text-sm font-black text-slate-800 dark:text-[#e8eaf0] font-mono">{entry.duration}</span>
       </div>
 
       {/* Actions */}
@@ -245,7 +245,7 @@ const DisplayRow: React.FC<DisplayRowProps> = ({ entry }) => {
         {entry.canEdit && (
           <button
             onClick={() => startEditing(entry)}
-            className="w-8 h-8 rounded-xl bg-slate-50 hover:bg-[#EFF6FF] text-slate-400 hover:text-[#1490FE] flex items-center justify-center border border-slate-200 hover:border-[#BFDBFE] transition-all"
+            className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-[#2e3347] hover:bg-[#EFF6FF] dark:hover:bg-[#1490FE]/15 text-slate-400 dark:text-[#8892aa] hover:text-[#1490FE] flex items-center justify-center border border-slate-200 dark:border-[#3a4060] hover:border-[#BFDBFE] dark:hover:border-[#1490FE]/30 transition-all"
             aria-label="Edit log"
           >
             <Pencil className="w-3.5 h-3.5" aria-hidden="true" />
@@ -253,7 +253,7 @@ const DisplayRow: React.FC<DisplayRowProps> = ({ entry }) => {
         )}
         <button
           onClick={() => deleteEntry(entry.id)}
-          className="w-8 h-8 rounded-xl bg-slate-50 hover:bg-[#FEF2F2] text-slate-400 hover:text-[#DC2626] flex items-center justify-center border border-slate-200 hover:border-[#FECACA] transition-all"
+          className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-[#2e3347] hover:bg-[#FEF2F2] dark:hover:bg-red-500/15 text-slate-400 dark:text-[#8892aa] hover:text-[#DC2626] flex items-center justify-center border border-slate-200 dark:border-[#3a4060] hover:border-[#FECACA] dark:hover:border-red-500/30 transition-all"
           aria-label="Delete log"
         >
           <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
@@ -330,7 +330,7 @@ export const TimesheetView: React.FC = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               Apply Filter
             </Button>

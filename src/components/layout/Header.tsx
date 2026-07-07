@@ -6,7 +6,9 @@ import {
   Bell,
   Menu,
   Play,
-  Pause
+  Pause,
+  Sun,
+  Moon
 } from 'lucide-react'
 import { useAppContext } from '../../context/AppContext'
 import { DatePickerWidget, SubTabBar } from '../common'
@@ -30,7 +32,9 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
     secondsTracked,
     timerProject,
     showTimerWidget,
-    setShowTimerWidget
+    setShowTimerWidget,
+    theme,
+    setTheme
   } = useAppContext()
 
   const viewTabs = [
@@ -49,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 
   return (
     <header
-      className="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-4 sm:px-6 z-[var(--z-header)] flex-shrink-0 gap-3"
+      className="h-16 bg-white dark:bg-[#242838] border-b border-slate-100 dark:border-[#3a4060] flex items-center justify-between px-4 sm:px-6 z-[var(--z-header)] flex-shrink-0 gap-3"
       role="banner"
     >
       {/* ── Left: hamburger (mobile) + page title ── */}
@@ -57,14 +61,14 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         {/* Mobile hamburger */}
         <button
           onClick={onMenuClick}
-          className="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors flex-shrink-0 cursor-pointer"
+          className="md:hidden p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex-shrink-0 cursor-pointer"
           aria-label="Open navigation menu"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         {/* Page icon */}
-        <div className="p-1.5 rounded-lg bg-[#D9E8F5] text-[#1490FE] flex-shrink-0">
+        <div className="p-1.5 rounded-lg bg-[#D9E8F5] dark:bg-slate-800 text-[#1490FE] dark:text-[#1490FE] flex-shrink-0">
           {activeTab === 'Clock In/Out' ? (
             <Clock className="w-4 h-4" aria-hidden="true" />
           ) : (activeTab === 'Timesheet' || activeTab === 'Timesheet Manage' || activeTab === 'Timesheet Status') ? (
@@ -76,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 
         {/* Left spacing / Page title */}
         {activeTab && (
-          <h2 className="hidden sm:block text-[15px] font-display font-black text-slate-800 tracking-tight leading-none truncate pr-2">
+          <h2 className="hidden sm:block text-[15px] font-display font-black text-slate-800 dark:text-white tracking-tight leading-none truncate pr-2">
             {activeTab === 'Timesheet Manage' ? 'Task Time Log' : activeTab === 'Clock In/Out' ? 'Clock In / Out' : activeTab}
           </h2>
         )}
@@ -125,14 +129,14 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 
         {/* Header Active Time Tracker (Beside notifications) */}
         <div className="relative flex items-center header-time-tracker">
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 pl-3.5 pr-2 py-1 rounded-full shadow-xs">
+          <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 pl-3.5 pr-2 py-1 rounded-full shadow-xs">
             <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setShowTimerWidget(!showTimerWidget)}>
               <span className={`w-1.5 h-1.5 rounded-full ${isTimerRunning ? 'bg-emerald-500 animate-pulse' : 'bg-slate-350'}`} />
-              <span className="font-mono text-xs font-black text-slate-800 tracking-wider">
+              <span className="font-mono text-xs font-black text-slate-800 dark:text-slate-200 tracking-wider">
                 {formatTime(secondsTracked)}
               </span>
               {timerProject && (
-                <span className="hidden md:inline text-[9px] font-extrabold text-[#1490FE] bg-blue-50 border border-blue-100/50 px-2 py-0.5 rounded-md truncate max-w-[100px]" title={timerProject}>
+                <span className="hidden md:inline text-[9px] font-extrabold text-[#1490FE] bg-blue-50 dark:bg-blue-900/30 border border-blue-100/50 dark:border-blue-900/50 px-2 py-0.5 rounded-md truncate max-w-[100px]" title={timerProject}>
                   {timerProject}
                 </span>
               )}
@@ -161,9 +165,23 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           <FloatingTimerWidget />
         </div>
 
+        {/* Theme Toggle Button */}
+        <button
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors flex-shrink-0 cursor-pointer"
+          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+          aria-label="Toggle theme"
+        >
+          {theme === 'light' ? (
+            <Moon className="w-[18px] h-[18px]" />
+          ) : (
+            <Sun className="w-[18px] h-[18px]" />
+          )}
+        </button>
+
         {/* Notification bell - hidden on narrow screens */}
         <button
-          className="relative p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors flex-shrink-0 cursor-pointer hidden sm:block"
+          className="relative p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-450 transition-colors flex-shrink-0 cursor-pointer hidden sm:block"
           aria-label="Notifications"
         >
           <Bell className="w-[18px] h-[18px]" />

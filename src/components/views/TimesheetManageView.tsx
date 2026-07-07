@@ -245,37 +245,37 @@ export const TimesheetManageView: React.FC = () => {
           />
         ) : (
           <div className="space-y-4">
-            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-md overflow-hidden">
+            <div className="bg-white dark:bg-[#242838] rounded-3xl border border-slate-200/80 dark:border-[#3a4060] shadow-md overflow-hidden">
               <div className="overflow-x-auto w-full scrollbar-none animate-fade-in">
                 <table className="w-full text-left text-xs border-collapse min-w-[840px]">
                   <thead>
-                    <tr className="bg-slate-50/75 border-b border-slate-200 text-slate-500 font-display font-bold uppercase select-none">
-                      <th className="py-4 px-6 text-[10px] tracking-wider text-slate-600 font-black w-[28%]">
+                    <tr className="bg-slate-50/75 dark:bg-[#2e3347] border-b border-slate-200 dark:border-[#3a4060] text-slate-500 dark:text-[#8892aa] font-display font-bold uppercase select-none">
+                      <th className="py-4 px-6 text-[10px] tracking-wider text-slate-600 dark:text-[#8892aa] font-black w-[28%]">
                         WEEKLY TIMESHEET
                       </th>
                       {weekDates.map((date, idx) => (
-                        <th key={idx} className="py-3 px-3 text-center border-l border-slate-200/60 w-[9%]">
+                        <th key={idx} className="py-3 px-3 text-center border-l border-slate-200/60 dark:border-[#3a4060] w-[9%]">
                           <div className="flex items-center gap-2 justify-center py-0.5">
-                            <span className="text-xl font-black text-slate-800 font-display leading-none">
+                            <span className="text-xl font-black text-slate-800 dark:text-[#e8eaf0] font-display leading-none">
                               {String(date.getDate()).padStart(2, '0')}
                             </span>
                             <div className="flex flex-col text-left">
-                              <span className="text-[9px] font-black text-slate-650 uppercase tracking-wider leading-none">
+                              <span className="text-[9px] font-black text-slate-650 dark:text-[#a8b0c8] uppercase tracking-wider leading-none">
                                 {date.toLocaleDateString('en-US', { weekday: 'short' })}
                               </span>
-                              <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-0.5">
+                              <span className="text-[8px] font-bold text-slate-400 dark:text-[#6b7595] uppercase tracking-widest leading-none mt-0.5">
                                 {date.toLocaleDateString('en-US', { month: 'short' })}
                               </span>
                             </div>
                           </div>
                         </th>
                       ))}
-                      <th className="py-4 px-4 text-center border-l border-slate-200 text-[10px] tracking-wider text-slate-600 font-black w-[9%] bg-slate-50">
+                      <th className="py-4 px-4 text-center border-l border-slate-200 dark:border-[#3a4060] text-[10px] tracking-wider text-slate-600 dark:text-[#8892aa] font-black w-[9%] bg-slate-50 dark:bg-[#1e2236]">
                         TOTAL
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-700 font-medium font-display">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#2e3347] text-slate-700 dark:text-[#c4cade] font-medium font-display">
                     {projectsToRender.map(project => {
                       const color = getProjectColor(project)
                       const initials = getInitials(project)
@@ -283,7 +283,7 @@ export const TimesheetManageView: React.FC = () => {
                       const isProjectWork = workType === 'Project Work'
 
                       return (
-                        <tr key={project} className="hover:bg-slate-50/50 transition-colors">
+                        <tr key={project} className="hover:bg-slate-50/50 dark:hover:bg-[#2e3347] transition-colors">
                           <td className="py-4 px-6 flex items-center gap-3">
                             <div
                               className="w-9 h-9 rounded-full flex items-center justify-center text-white font-black text-xs flex-shrink-0 shadow-xs"
@@ -292,13 +292,13 @@ export const TimesheetManageView: React.FC = () => {
                               {initials}
                             </div>
                             <div className="truncate">
-                              <span className="block font-bold text-slate-800 text-xs truncate">
+                              <span className="block font-bold text-slate-800 dark:text-[#e8eaf0] text-xs truncate">
                                 {project}
                               </span>
                               <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider border ${
                                 isProjectWork
-                                  ? 'bg-emerald-50/60 text-emerald-600 border-emerald-100'
-                                  : 'bg-amber-50/60 text-amber-600 border-amber-100'
+                                  ? 'bg-emerald-50/60 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20'
+                                  : 'bg-amber-50/60 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20'
                               }`}>
                                 {workType}
                               </span>
@@ -310,15 +310,15 @@ export const TimesheetManageView: React.FC = () => {
                             const mins = getProjectMinutesForDate(project, dateStr)
                             const val = formatMins(mins)
                             return (
-                              <td key={idx} className={`py-4 px-3 text-center border-l border-slate-100/80 font-mono text-[12px] ${
-                                val === '-' ? 'text-slate-300 font-medium' : 'text-slate-800 font-bold'
+                              <td key={idx} className={`py-4 px-3 text-center border-l border-slate-100/80 dark:border-[#2e3347] font-mono text-[12px] ${
+                                val === '-' ? 'text-slate-300 dark:text-[#3a4060] font-medium' : 'text-slate-800 dark:text-[#e8eaf0] font-bold'
                               }`}>
                                 {val === '-' ? '—' : val}
                               </td>
                             )
                           })}
 
-                          <td className="py-4 px-4 text-center border-l border-slate-200/80 font-mono font-black text-slate-800 text-[12px] bg-slate-50/40">
+                          <td className="py-4 px-4 text-center border-l border-slate-200/80 dark:border-[#3a4060] font-mono font-black text-slate-800 dark:text-[#e8eaf0] text-[12px] bg-slate-50/40 dark:bg-[#1e2236]/60">
                             {formatMins(getProjectTotalMinutes(project))}
                           </td>
                         </tr>
@@ -326,8 +326,8 @@ export const TimesheetManageView: React.FC = () => {
                     })}
 
                     {/* All Projects Summary Row */}
-                    <tr className="bg-slate-50/30 font-bold border-t border-slate-200">
-                      <td className="py-4 px-6 text-slate-850 text-xs font-black">
+                    <tr className="bg-slate-50/30 dark:bg-[#1e2236]/40 font-bold border-t border-slate-200 dark:border-[#3a4060]">
+                      <td className="py-4 px-6 text-slate-850 dark:text-[#e8eaf0] text-xs font-black">
                         All projects
                       </td>
                       {weekDates.map((date, idx) => {
@@ -335,21 +335,21 @@ export const TimesheetManageView: React.FC = () => {
                         const mins = getAllProjectsMinutesForDate(dateStr)
                         const val = formatMins(mins)
                         return (
-                          <td key={idx} className={`py-4 px-3 text-center border-l border-slate-100/80 font-mono text-[12px] ${
-                            val === '-' ? 'text-slate-300 font-medium' : 'text-slate-800 font-black'
+                          <td key={idx} className={`py-4 px-3 text-center border-l border-slate-100/80 dark:border-[#2e3347] font-mono text-[12px] ${
+                            val === '-' ? 'text-slate-300 dark:text-[#3a4060] font-medium' : 'text-slate-800 dark:text-[#e8eaf0] font-black'
                           }`}>
                             {val === '-' ? '—' : val}
                           </td>
                         )
                       })}
-                      <td className="py-4 px-4 text-center border-l border-slate-200 font-mono font-black text-[#1490FE] text-[12px] bg-blue-50/20">
+                      <td className="py-4 px-4 text-center border-l border-slate-200 dark:border-[#3a4060] font-mono font-black text-[#1490FE] text-[12px] bg-blue-50/20 dark:bg-[#1490FE]/10">
                         {formatMins(getAllProjectsGrandTotalMinutes())}
                       </td>
                     </tr>
 
                     {/* Clock In/Out Summary Row */}
-                    <tr className="bg-slate-50/50 font-bold">
-                      <td className="py-4 px-6 text-slate-850 text-xs font-black">
+                    <tr className="bg-slate-50/50 dark:bg-[#1e2236]/20 font-bold">
+                      <td className="py-4 px-6 text-slate-850 dark:text-[#e8eaf0] text-xs font-black">
                         Clock In/Out
                       </td>
                       {weekDates.map((date, idx) => {
@@ -357,14 +357,14 @@ export const TimesheetManageView: React.FC = () => {
                         const mins = getClockInOutMinutesForDate(dateStr)
                         const val = formatMins(mins)
                         return (
-                          <td key={idx} className={`py-4 px-3 text-center border-l border-slate-100/80 font-mono text-[12px] ${
-                            val === '-' ? 'text-slate-350 font-medium' : 'text-slate-800 font-black'
+                          <td key={idx} className={`py-4 px-3 text-center border-l border-slate-100/80 dark:border-[#2e3347] font-mono text-[12px] ${
+                            val === '-' ? 'text-slate-350 dark:text-[#3a4060] font-medium' : 'text-slate-800 dark:text-[#e8eaf0] font-black'
                           }`}>
                             {val === '-' ? '—' : val}
                           </td>
                         )
                       })}
-                      <td className="py-4 px-4 text-center border-l border-slate-200 font-mono font-black text-[#1490FE] text-[12px] bg-blue-50/30">
+                      <td className="py-4 px-4 text-center border-l border-slate-200 dark:border-[#3a4060] font-mono font-black text-[#1490FE] text-[12px] bg-blue-50/30 dark:bg-[#1490FE]/10">
                         {formatMins(getClockInOutGrandTotalMinutes())}
                       </td>
                     </tr>

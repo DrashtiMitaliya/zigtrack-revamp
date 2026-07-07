@@ -80,18 +80,32 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
 
   // Styles based on variant
   let btnClass = "w-full flex items-center justify-between font-semibold text-xs py-2 pl-3.5 pr-8.5 rounded-xl outline-none cursor-pointer transition-all text-left truncate "
-  let iconColor = "text-slate-400"
+  let iconColor = "text-slate-400 dark:text-[#8892aa]"
 
   if (variant === 'light') {
-    btnClass += `bg-slate-50 border ${isOpen ? 'border-[#1490FE] ring-2 ring-[#1490FE]/15 bg-white' : 'border-slate-200 hover:border-slate-300'} text-slate-700`
+    btnClass += `bg-slate-50 dark:bg-[#2e3347] border ${
+      isOpen
+        ? 'border-[#1490FE] ring-2 ring-[#1490FE]/15 bg-white dark:bg-[#2e3347]'
+        : 'border-slate-200 dark:border-[#3a4060] hover:border-slate-300 dark:hover:border-[#4a5270]'
+    } text-slate-700 dark:text-[#c4cade]`
   } else if (variant === 'input-field') {
-    btnClass = `w-full flex items-center justify-between font-semibold text-xs py-3.5 px-4 bg-slate-50/70 border ${isOpen ? 'border-[#1490FE] ring-4 ring-[#1490FE]/10 bg-white' : 'border-slate-200 hover:border-slate-300'} text-slate-800 outline-none cursor-pointer transition-all text-left truncate rounded-2xl`
-    iconColor = "text-slate-400"
+    btnClass = `w-full flex items-center justify-between font-semibold text-xs py-3.5 px-4 bg-slate-50/70 dark:bg-[#2e3347] border ${
+      isOpen
+        ? 'border-[#1490FE] ring-4 ring-[#1490FE]/10 bg-white dark:bg-[#2e3347]'
+        : 'border-slate-200 dark:border-[#3a4060] hover:border-slate-300 dark:hover:border-[#4a5270]'
+    } text-slate-800 dark:text-[#c4cade] outline-none cursor-pointer transition-all text-left truncate rounded-2xl`
+    iconColor = "text-slate-400 dark:text-[#8892aa]"
   } else if (variant === 'dark-glass') {
-    btnClass += `bg-white/10 backdrop-blur-md border ${isOpen ? 'border-white/35 bg-white/15' : 'border-white/10 hover:bg-white/15'} text-white`
+    btnClass += `bg-white/10 backdrop-blur-md border ${
+      isOpen ? 'border-white/35 bg-white/15' : 'border-white/10 hover:bg-white/15'
+    } text-white`
     iconColor = "text-white/60"
   } else if (variant === 'small') {
-    btnClass = `w-full flex items-center justify-between bg-slate-50 border ${isOpen ? 'border-[#1490FE] ring-2 ring-[#1490FE]/15 bg-white' : 'border-slate-200 hover:border-slate-300'} text-slate-700 font-semibold text-[11px] py-1.5 pl-2.5 pr-7.5 rounded-lg outline-none cursor-pointer transition-all text-left truncate`
+    btnClass = `w-full flex items-center justify-between bg-slate-50 dark:bg-[#2e3347] border ${
+      isOpen
+        ? 'border-[#1490FE] ring-2 ring-[#1490FE]/15 bg-white dark:bg-[#2e3347]'
+        : 'border-slate-200 dark:border-[#3a4060] hover:border-slate-300 dark:hover:border-[#4a5270]'
+    } text-slate-700 dark:text-[#c4cade] font-semibold text-[11px] py-1.5 pl-2.5 pr-7.5 rounded-lg outline-none cursor-pointer transition-all text-left truncate`
   }
 
   return (
@@ -117,7 +131,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
           className={`absolute z-[999] left-0 right-0 mt-1.5 rounded-xl border max-h-60 overflow-y-auto shadow-lg py-1.5 animate-in fade-in slide-in-from-top-1 duration-150 ${
             variant === 'dark-glass' 
               ? 'bg-slate-900 border-slate-800 text-white' 
-              : 'bg-white border-slate-200 text-slate-800'
+              : 'bg-white dark:bg-[#2e3347] border-slate-200 dark:border-[#3a4060] text-slate-800 dark:text-[#e8eaf0]'
           }`}
           role="listbox"
         >
@@ -128,7 +142,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
               className={`w-full px-3.5 py-2 text-xs font-semibold transition-colors text-left ${
                 variant === 'dark-glass'
                   ? 'text-white/40 hover:bg-white/5'
-                  : 'text-slate-400 hover:bg-slate-50'
+                  : 'text-slate-400 dark:text-[#6b7595] hover:bg-slate-50 dark:hover:bg-[#3a4060]'
               }`}
               role="option"
               aria-selected={!value}
@@ -148,10 +162,10 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
                   isSelected
                     ? variant === 'dark-glass'
                       ? 'bg-[#10B981]/20 text-[#10B981] font-bold'
-                      : 'bg-[#EFF6FF] text-[#1490FE]'
+                      : 'bg-[#EFF6FF] dark:bg-[#1490FE]/15 text-[#1490FE]'
                     : variant === 'dark-glass'
                     ? 'hover:bg-white/5 text-white/90'
-                    : 'hover:bg-slate-50 text-slate-700'
+                    : 'hover:bg-slate-50 dark:hover:bg-[#3a4060] text-slate-700 dark:text-[#c4cade]'
                 }`}
                 role="option"
                 aria-selected={isSelected}
@@ -164,7 +178,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
                         ? 'bg-[#1490FE] border-[#1490FE] text-white shadow-xs' 
                         : variant === 'dark-glass'
                         ? 'border-white/20 bg-transparent'
-                        : 'border-slate-300 bg-transparent'
+                        : 'border-slate-300 dark:border-[#3a4060] bg-transparent'
                     }`}
                   >
                     {isSelected && (

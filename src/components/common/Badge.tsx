@@ -23,15 +23,15 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
-  default: 'bg-[#D9E8F5] text-[#141414] border-[#1490FE]/10',
-  blue:    'bg-[#1490FE]/10 text-[#1490FE] border-[#1490FE]/15',
-  coral:   'bg-[#FF6347]/10 text-[#FF6347] border-[#FF6347]/15',
-  success: 'bg-[#ECFDF5] text-[#059669] border-[#A7F3D0]',
-  warning: 'bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]',
-  error:   'bg-[#FEF2F2] text-[#DC2626] border-[#FECACA]',
-  info:    'bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]',
-  muted:   'bg-slate-100 text-slate-500 border-slate-200',
-  purple:  'bg-purple-50 text-purple-700 border-purple-200',
+  default: 'bg-[#D9E8F5] dark:bg-[#1490FE]/15 text-[#141414] dark:text-[#93c5fd] border-[#1490FE]/10 dark:border-[#1490FE]/25',
+  blue:    'bg-[#1490FE]/10 dark:bg-[#1490FE]/15 text-[#1490FE] border-[#1490FE]/15 dark:border-[#1490FE]/30',
+  coral:   'bg-[#FF6347]/10 dark:bg-[#FF6347]/15 text-[#FF6347] border-[#FF6347]/15 dark:border-[#FF6347]/30',
+  success: 'bg-[#ECFDF5] dark:bg-emerald-500/10 text-[#059669] dark:text-emerald-400 border-[#A7F3D0] dark:border-emerald-500/25',
+  warning: 'bg-[#FFFBEB] dark:bg-amber-500/10  text-[#B45309] dark:text-amber-400   border-[#FDE68A] dark:border-amber-500/25',
+  error:   'bg-[#FEF2F2] dark:bg-red-500/10    text-[#DC2626] dark:text-red-400     border-[#FECACA] dark:border-red-500/25',
+  info:    'bg-[#EFF6FF] dark:bg-blue-500/10   text-[#2563EB] dark:text-blue-400   border-[#BFDBFE] dark:border-blue-500/25',
+  muted:   'bg-slate-100 dark:bg-[#2e3347]     text-slate-500 dark:text-[#8892aa]  border-slate-200 dark:border-[#3a4060]',
+  purple:  'bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-500/25',
 }
 
 const sizeClasses: Record<BadgeSize, string> = {

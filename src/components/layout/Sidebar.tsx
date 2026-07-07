@@ -72,8 +72,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
 
   const navBtnClass = (isActive: boolean) =>
     `w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 cursor-pointer ${isActive
-      ? 'bg-zg-vivid-blue/15 text-zg-vivid-blue font-bold border-l-2 border-zg-vivid-blue rounded-l-none'
-      : 'hover:bg-zg-gray-800 text-zg-gray-500 hover:text-white'
+      ? 'bg-zg-vivid-blue/15 dark:bg-[#1490FE]/20 text-zg-vivid-blue font-bold border-l-2 border-zg-vivid-blue rounded-l-none'
+      : 'hover:bg-zg-gray-800 dark:hover:bg-[#2e3347] text-zg-gray-500 hover:text-white'
     }`
 
   const isTimesheetActive = location.pathname.startsWith('/timesheet')
@@ -82,13 +82,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
     <aside
       onMouseEnter={() => setIsCollapsed(false)}
       onMouseLeave={() => setIsCollapsed(true)}
-      className={`flex flex-col justify-between bg-zg-chinese-black border-r border-zg-gray-800 shadow-sm flex-shrink-0 h-full transition-all duration-300 ease-in-out select-none ${
+      className={`flex flex-col justify-between bg-zg-chinese-black dark:bg-[#1e2236] border-r border-zg-gray-800 dark:border-[#2e3347] shadow-sm flex-shrink-0 h-full transition-all duration-300 ease-in-out select-none ${
         isCollapsed ? 'w-20' : 'w-64'
       }`}
       aria-label="Primary navigation"
     >
       {/* Header section (Brand Logo) */}
-      <div className="p-4 border-b border-zg-gray-800 flex items-center flex-shrink-0">
+      <div className="p-4 border-b border-zg-gray-800 dark:border-[#2e3347] flex items-center flex-shrink-0">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-xl bg-zg-vivid-blue flex items-center justify-center text-white font-extrabold shadow-[0_4px_12px_rgba(20,144,254,0.3)] flex-shrink-0">
             Z
@@ -136,8 +136,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                   }}
                   className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-zg-vivid-blue/15 text-zg-vivid-blue font-bold shadow-xs'
-                      : 'hover:bg-zg-gray-800 text-zg-gray-500 hover:text-white'
+                      ? 'bg-zg-vivid-blue/15 dark:bg-[#1490FE]/20 text-zg-vivid-blue font-bold shadow-xs'
+                      : 'hover:bg-zg-gray-800 dark:hover:bg-[#2e3347] text-zg-gray-500 hover:text-white'
                   }`}
                   title={name}
                 >
@@ -213,8 +213,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                           type="button"
                           onClick={() => handleNav(sub.key)}
                           className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${isSubActive
-                            ? 'bg-zg-vivid-blue text-white shadow-xs'
-                            : 'hover:bg-zg-gray-800 text-zg-gray-500 hover:text-white'
+                            ? 'bg-zg-vivid-blue dark:bg-[#1490FE] text-white shadow-xs'
+                            : 'hover:bg-zg-gray-800 dark:hover:bg-[#2e3347] text-zg-gray-500 hover:text-white'
                             }`}
                         >
                           <span>{sub.name}</span>
@@ -231,7 +231,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
 
       {/* Footer permanent Day In/Out and User Profile */}
       {isCollapsed ? (
-        <div className="p-3 border-t border-zg-gray-800 space-y-3 flex flex-col items-center flex-shrink-0">
+        <div className="p-3 border-t border-zg-gray-800 dark:border-[#2e3347] space-y-3 flex flex-col items-center flex-shrink-0">
           <button
             onClick={() => isClockedIn ? setShowDayOutModal(true) : handleClockIn()}
             className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-md cursor-pointer text-white ${
@@ -252,7 +252,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
           </div>
         </div>
       ) : (
-        <div className="p-4 border-t border-zg-gray-800 space-y-3 flex-shrink-0">
+        <div className="p-4 border-t border-zg-gray-800 dark:border-[#2e3347] space-y-3 flex-shrink-0">
           <button
             onClick={() => isClockedIn ? setShowDayOutModal(true) : handleClockIn()}
             className={`w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-bold text-xs transition-all cursor-pointer ${

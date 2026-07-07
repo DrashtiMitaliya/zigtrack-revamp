@@ -38,6 +38,8 @@ interface AppContextType {
   setIsClockedIn: (inState: boolean) => void
   isTimerRunning: boolean
   setIsTimerRunning: (running: boolean) => void
+  theme: 'light' | 'dark'
+  setTheme: (t: 'light' | 'dark') => void
   secondsTracked: number
   setSecondsTracked: React.Dispatch<React.SetStateAction<number>>
   bottomSeconds: number
@@ -136,6 +138,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [projectStatusFilter, setProjectStatusFilter] = useState('All')
   const [projectsPerPage] = useState(6)
   const [projects] = useState<Project[]>(initialProjects)
+
+  // Theme state
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('theme') as 'light' | 'dark' | null
+    if (saved) {
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+      return saved
+    }
+    return 'light'
+  })
+
+  const handleSetTheme = (t: 'light' | 'dark') => {
+    setTheme(t)
+    localStorage.setItem('theme', t)
+    if (t === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }
 
   // Clock In/Out state
   const [isClockedIn, setIsClockedIn] = useState(true)
@@ -454,6 +480,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setIsClockedIn,
         isTimerRunning,
         setIsTimerRunning,
+        theme,
+        setTheme: handleSetTheme,
         secondsTracked,
         setSecondsTracked,
         bottomSeconds,

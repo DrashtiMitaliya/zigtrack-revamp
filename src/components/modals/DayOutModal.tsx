@@ -85,21 +85,21 @@ export const DayOutModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-y-auto">
-      <div className="bg-white rounded-3xl w-full max-w-4xl border border-slate-100 shadow-2xl overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white dark:bg-[#242838] rounded-3xl w-full max-w-4xl border border-slate-100 dark:border-[#3a4060] shadow-2xl overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-200">
         
         {/* Header */}
-        <div className="px-6 py-5 border-b border-rose-50 flex justify-between items-start bg-rose-50/20">
+        <div className="px-6 py-5 border-b border-rose-50 dark:border-[#3a4060] flex justify-between items-start bg-rose-50/20 dark:bg-[#2e3347]">
           <div>
-            <h2 className="text-lg font-display font-extrabold text-slate-800 tracking-tight">
+            <h2 className="text-lg font-display font-extrabold text-slate-800 dark:text-[#e8eaf0] tracking-tight">
               Today's Summary
             </h2>
-            <p className="text-xs text-slate-400 font-semibold mt-0.5">
-              Day in at <span className="text-slate-650 font-bold">{dayInTime}</span>
+            <p className="text-xs text-slate-400 dark:text-[#8892aa] font-semibold mt-0.5">
+              Day in at <span className="text-slate-650 dark:text-[#c4cade] font-bold">{dayInTime}</span>
             </p>
           </div>
           <button 
             onClick={() => setShowDayOutModal(false)} 
-            className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-1.5 rounded-xl transition-all"
+            className="text-slate-400 dark:text-[#8892aa] hover:text-slate-600 dark:hover:text-[#e8eaf0] hover:bg-slate-100 dark:hover:bg-[#3a4060] p-1.5 rounded-xl transition-all"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -111,8 +111,8 @@ export const DayOutModal: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
             {/* Card 1: Productive Hours */}
-            <div className="flex items-center gap-4 bg-rose-50/30 border border-rose-100/50 rounded-2xl p-4.5 transition-all hover:shadow-xs">
-              <div className="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-zg-coral flex-shrink-0">
+            <div className="flex items-center gap-4 bg-rose-50/30 dark:bg-[#FF6347]/[0.08] border border-rose-100/50 dark:border-[#FF6347]/20 rounded-2xl p-4.5 transition-all hover:shadow-xs">
+              <div className="w-12 h-12 rounded-full bg-rose-50 dark:bg-[#FF6347]/10 flex items-center justify-center text-zg-coral flex-shrink-0">
                 <div className="relative">
                   <Clock className="w-6 h-6 stroke-[2.5]" />
                   <span className="absolute -bottom-1 -right-1 bg-zg-coral text-[9px] font-black text-white w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-white">
@@ -124,15 +124,15 @@ export const DayOutModal: React.FC = () => {
                 <span className="block text-xl font-mono font-black text-[#FF6347] leading-none">
                   {formatMinutes(taskMinutes)}
                 </span>
-                <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mt-1.5">
+                <span className="block text-[11px] font-bold text-slate-400 dark:text-[#8892aa] uppercase tracking-wider mt-1.5">
                   Productive Hours
                 </span>
               </div>
             </div>
 
             {/* Card 2: Productivity Percentage */}
-            <div className="flex items-center gap-4 bg-rose-50/30 border border-rose-100/50 rounded-2xl p-4.5 transition-all hover:shadow-xs">
-              <div className="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-zg-coral flex-shrink-0">
+            <div className="flex items-center gap-4 bg-rose-50/30 dark:bg-[#FF6347]/[0.08] border border-rose-100/50 dark:border-[#FF6347]/20 rounded-2xl p-4.5 transition-all hover:shadow-xs">
+              <div className="w-12 h-12 rounded-full bg-rose-50 dark:bg-[#FF6347]/10 flex items-center justify-center text-zg-coral flex-shrink-0">
                 <div className="relative">
                   <TrendingUp className="w-6 h-6 stroke-[2.5]" />
                   <span className="absolute -bottom-1 -right-1 bg-zg-coral text-[9px] font-black text-white w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-white">
@@ -144,7 +144,7 @@ export const DayOutModal: React.FC = () => {
                 <span className="block text-xl font-mono font-black text-[#FF6347] leading-none">
                   {productivityPercent}%
                 </span>
-                <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mt-1.5">
+                <span className="block text-[11px] font-bold text-slate-400 dark:text-[#8892aa] uppercase tracking-wider mt-1.5">
                   Productivity
                 </span>
               </div>
@@ -153,7 +153,7 @@ export const DayOutModal: React.FC = () => {
           </div>
 
           {/* Task Summary Section */}
-          <div className="rounded-2xl border border-rose-100 overflow-hidden shadow-xs">
+          <div className="rounded-2xl border border-rose-100 dark:border-[#FF6347]/20 overflow-hidden shadow-xs">
             {/* Red Table Header Banner */}
             <div className="bg-gradient-to-r from-zg-coral to-rose-500 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-white">
               <span className="text-xs font-display font-extrabold tracking-widest uppercase">
@@ -168,7 +168,7 @@ export const DayOutModal: React.FC = () => {
 
             {/* Entries Body */}
             {todayEntries.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 text-xs font-semibold">
+              <div className="p-8 text-center text-slate-400 dark:text-[#8892aa] text-xs font-semibold">
                 No tasks logged today.
               </div>
             ) : (
@@ -176,7 +176,7 @@ export const DayOutModal: React.FC = () => {
                 {/* Desktop View */}
                 <table className="hidden sm:table w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-rose-50 text-[10px] font-display font-bold text-slate-400 uppercase tracking-wider">
+                    <tr className="bg-slate-50 dark:bg-[#2e3347] border-b border-rose-50 dark:border-[#3a4060] text-[10px] font-display font-bold text-slate-400 dark:text-[#8892aa] uppercase tracking-wider">
                       <th className="py-2.5 px-4 w-[25%]">Project</th>
                       <th className="py-2.5 px-4 w-[45%]">Task</th>
                       <th className="py-2.5 px-4 w-[10%] text-center">Start Time</th>
@@ -184,18 +184,18 @@ export const DayOutModal: React.FC = () => {
                       <th className="py-2.5 px-4 w-[10%] text-center">Duration</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-rose-50/40 text-slate-700 font-medium">
+                  <tbody className="divide-y divide-rose-50/40 dark:divide-[#3a4060] text-slate-700 dark:text-[#c4cade] font-medium">
                     {todayEntries.map(e => {
                       const times = parseTimeRange(e.timeRange)
                       const isLongText = e.description.length > 60
                       const showFullText = seeMoreId === e.id
 
                       return (
-                        <tr key={e.id} className="hover:bg-slate-50/40 transition-colors">
-                          <td className="py-3 px-4 font-bold text-slate-800 align-top">
+                        <tr key={e.id} className="hover:bg-slate-50/40 dark:hover:bg-[#2e3347] transition-colors">
+                          <td className="py-3 px-4 font-bold text-slate-800 dark:text-[#e8eaf0] align-top">
                             {e.project}
                           </td>
-                          <td className="py-3 px-4 text-slate-650 leading-relaxed align-top break-words">
+                          <td className="py-3 px-4 text-slate-650 dark:text-[#a8b0c8] leading-relaxed align-top break-words">
                             {showFullText ? e.description : `${e.description.slice(0, 60)}${isLongText ? '...' : ''}`}
                             {isLongText && (
                               <button 
@@ -206,13 +206,13 @@ export const DayOutModal: React.FC = () => {
                               </button>
                             )}
                           </td>
-                          <td className="py-3 px-4 text-center font-mono align-top text-slate-500 font-bold">
+                          <td className="py-3 px-4 text-center font-mono align-top text-slate-500 dark:text-[#8892aa] font-bold">
                             {times.start}
                           </td>
-                          <td className="py-3 px-4 text-center font-mono align-top text-slate-500 font-bold">
+                          <td className="py-3 px-4 text-center font-mono align-top text-slate-500 dark:text-[#8892aa] font-bold">
                             {times.end}
                           </td>
-                          <td className="py-3 px-4 text-center font-mono font-black text-slate-800 align-top">
+                          <td className="py-3 px-4 text-center font-mono font-black text-slate-800 dark:text-[#e8eaf0] align-top">
                             {e.duration}
                           </td>
                         </tr>
@@ -278,14 +278,14 @@ export const DayOutModal: React.FC = () => {
           </label>
 
           {/* Warning notice */}
-          <div className="flex items-start gap-2 bg-amber-50/40 border border-amber-100 rounded-xl p-3 text-[11px] text-amber-750 font-medium leading-relaxed">
+          <div className="flex items-start gap-2 bg-amber-50/40 dark:bg-amber-500/[0.08] border border-amber-100 dark:border-amber-500/20 rounded-xl p-3 text-[11px] text-amber-750 dark:text-amber-400 font-medium leading-relaxed">
             <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
             <span>Clocking out will finalize your active session. You can review and edit your logged details in the Timesheet module if needed.</span>
           </div>
 
           {/* Confirmation Prompt & Buttons */}
-          <div className="space-y-4 pt-2 border-t border-rose-50 text-center">
-            <h3 className="text-base font-display font-extrabold text-slate-800">
+          <div className="space-y-4 pt-2 border-t border-rose-50 dark:border-[#3a4060] text-center">
+            <h3 className="text-base font-display font-extrabold text-slate-800 dark:text-[#e8eaf0]">
               Are you sure you want to day out?
             </h3>
             
@@ -300,7 +300,7 @@ export const DayOutModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowDayOutModal(false)}
-                className="w-full sm:w-36 border-2 border-[#FF6347]/30 hover:border-[#FF6347] hover:bg-rose-50/25 active:scale-98 text-[#FF6347] text-sm font-bold py-2.5 px-6 rounded-xl transition-all"
+                className="w-full sm:w-36 border-2 border-[#FF6347]/30 hover:border-[#FF6347] hover:bg-rose-50/25 dark:hover:bg-[#FF6347]/10 active:scale-98 text-[#FF6347] text-sm font-bold py-2.5 px-6 rounded-xl transition-all"
               >
                 No
               </button>
