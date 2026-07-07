@@ -1,136 +1,229 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Clock,
   Briefcase,
   LayoutDashboard,
   FileText,
-  TrendingUp,
-  Settings,
-  HelpCircle,
-  MessageSquare
+  X,
+  ChevronDown
 } from 'lucide-react'
 import { useAppContext } from '../../context/AppContext'
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  /** Called when the mobile close (X) button is pressed */
+  onClose?: () => void
+}
+
+interface NavSubItem {
+  readonly name: string
+  readonly key: string
+}
+
+interface NavItem {
+  readonly name: string
+  readonly icon: React.ComponentType<any>
+  readonly badge?: string
+  readonly hasDot?: boolean
+  readonly subItems?: readonly NavSubItem[]
+}
+
+const navItems: readonly NavItem[] = [
+  { name: 'Dashboards', icon: LayoutDashboard },
+  { name: 'Clock In/Out', icon: Clock },
+  {
+    name: 'Timesheet',
+    icon: FileText,
+    badge: 'Active',
+    subItems: [
+      { name: 'Timesheet Manage', key: 'Timesheet Manage' },
+      { name: 'Timesheet Status', key: 'Timesheet Status' }
+    ] as const
+  },
+  { name: 'Projects', icon: Briefcase, hasDot: true },
+
+]
+
+export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const {
     activeTab,
     setActiveTab,
     isClockedIn,
-    setIsClockedIn
+    setShowDayOutModal,
+    handleClockIn
   } = useAppContext()
 
-  const navItems = [
-    { name: 'Dashboards', icon: LayoutDashboard },
-    { name: 'Clock In/Out', icon: Clock },
-    { name: 'Timesheet', icon: FileText, badge: 'Active' },
-    { name: 'Projects', icon: Briefcase, hasDot: true },
-    { name: 'Reports', icon: TrendingUp },
-    { name: 'Board', icon: Settings },
-  ]
+  const [isTimesheetExpanded, setIsTimesheetExpanded] = useState(true)
+
+  const handleNav = (name: string) => {
+    setActiveTab(name)
+    onClose?.() // close drawer on mobile after navigation
+  }
+
+  const navBtnClass = (isActive: boolean) =>
+    `w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${isActive
+      ? 'bg-zg-vivid-blue/15 text-zg-vivid-blue font-bold border-l-2 border-zg-vivid-blue rounded-l-none'
+      : 'hover:bg-zg-gray-800 text-zg-gray-500 hover:text-white'
+    }`
+
+  const isTimesheetActive = activeTab === 'Timesheet Manage' || activeTab === 'Timesheet Status' || activeTab === 'Timesheet'
 
   return (
-    <aside className="w-64 flex flex-col justify-between bg-zg-chinese-black border-r border-zg-gray-800 z-20 shadow-sm flex-shrink-0">
-      <div className="p-5 border-b border-zg-gray-800 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#1490FE] to-[#00C6FF] flex items-center justify-center font-display font-black text-white text-xs shadow-[0_4px_12px_rgba(20,144,254,0.2)]">
-            {"</>"}
+    <aside
+      className="w-64 flex flex-col justify-between bg-zg-chinese-black border-r border-zg-gray-800 shadow-sm flex-shrink-0 h-full"
+      aria-label="Primary navigation"
+    >
+      <div className="p-4 border-b border-zg-gray-800 flex items-center justify-between flex-shrink-0">
+        {/* Brand logo */}
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-xl bg-zg-vivid-blue flex items-center justify-center text-white font-extrabold shadow-[0_4px_12px_rgba(20,144,254,0.3)]">
+            Z
           </div>
           <div>
-            <span className="font-display font-bold text-sm text-white block leading-tight">ZigTrack</span>
-            <span className="text-[9px] font-display font-bold tracking-widest text-zg-vivid-blue uppercase">TECHNOLAB</span>
+            <h1 className="font-display font-black text-sm text-white tracking-wide uppercase">
+              ZigTrack
+            </h1>
+            <p className="text-[9px] text-zg-gray-500 font-semibold leading-none mt-0.5">
+              WORKSPACE
+            </p>
           </div>
         </div>
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-        </span>
+
+        {/* Mobile close menu trigger */}
+        <div className="md:hidden">
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-1 text-zg-gray-500 hover:text-white hover:bg-zg-gray-800 rounded-lg transition-colors"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5" aria-hidden="true" />
+            </button>
+          )}
+        </div>
       </div>
 
+      {/* ── Nav items ─────────────────────────────── */}
       <div className="flex-1 overflow-y-auto py-5 px-3 space-y-5">
         <div>
-          <p className="text-[9px] font-display font-bold tracking-widest text-zg-gray-500 uppercase px-2 mb-2">WORKSPACES</p>
+          <p className="text-[9px] font-display font-bold tracking-widest text-zg-gray-500 uppercase px-2 mb-2">
+            WORKSPACES
+          </p>
           <nav className="space-y-0.5">
-            {navItems.map(({ name, icon: Icon, badge, hasDot }) => {
-              const isActive = activeTab === name
+            {navItems.map(({ name, icon: Icon, badge, hasDot, subItems }) => {
+              const isActive = activeTab === name || (name === 'Timesheet' && isTimesheetActive)
               return (
-                <button
-                  key={name}
-                  onClick={() => setActiveTab(name)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${
-                    isActive 
-                      ? 'bg-zg-vivid-blue/15 text-zg-vivid-blue font-bold border-l-2 border-zg-vivid-blue rounded-l-none' 
-                      : 'hover:bg-zg-gray-800 text-zg-gray-500 hover:text-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-zg-vivid-blue' : 'text-zg-gray-500'}`} />
-                    <span>{name}</span>
-                  </div>
-                  {hasDot && !isActive && <span className="w-1.5 h-1.5 rounded-full bg-zg-vivid-blue" />}
-                  {badge && (
-                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
-                      isActive 
-                        ? 'bg-zg-vivid-blue/20 text-zg-vivid-blue' 
-                        : 'bg-zg-gray-800 text-zg-gray-500'
-                    }`}>
-                      {badge}
-                    </span>
+                <div key={name}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (subItems) {
+                        setIsTimesheetExpanded(!isTimesheetExpanded)
+                        if (!isTimesheetActive) {
+                          handleNav('Timesheet Manage')
+                        }
+                      } else {
+                        handleNav(name)
+                      }
+                    }}
+                    className={navBtnClass(isActive)}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Icon
+                        className={`w-4 h-4 ${isActive ? 'text-zg-vivid-blue' : 'text-zg-gray-500'}`}
+                        aria-hidden="true"
+                      />
+                      <span>{name}</span>
+                    </div>
+
+                    {subItems ? (
+                      <div className="flex items-center gap-1.5">
+                        {badge && !isTimesheetActive && (
+                          <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-zg-gray-800 text-zg-gray-500">
+                            {badge}
+                          </span>
+                        )}
+                        <ChevronDown className={`w-3.5 h-3.5 text-zg-gray-500 transition-transform duration-150 ${isTimesheetExpanded ? 'rotate-0' : '-rotate-90'}`} />
+                      </div>
+                    ) : (
+                      <>
+                        {hasDot && !isActive && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-zg-vivid-blue" aria-hidden="true" />
+                        )}
+                        {badge && (
+                          <span
+                            className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${isActive
+                              ? 'bg-zg-vivid-blue/20 text-zg-vivid-blue'
+                              : 'bg-zg-gray-800 text-zg-gray-500'
+                              }`}
+                          >
+                            {badge}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </button>
+
+                  {/* Submenu items */}
+                  {subItems && isTimesheetExpanded && (
+                    <div className="mt-1 pl-4 space-y-1">
+                      {subItems.map(sub => {
+                        const isSubActive = activeTab === sub.key
+                        return (
+                          <button
+                            key={sub.key}
+                            type="button"
+                            onClick={() => handleNav(sub.key)}
+                            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${isSubActive
+                              ? 'bg-zg-vivid-blue text-white shadow-xs'
+                              : 'hover:bg-zg-gray-800 text-zg-gray-500 hover:text-white'
+                              }`}
+                          >
+                            <div className={`w-1.5 h-1.5 rounded-full border ${isSubActive ? 'border-white bg-white' : 'border-zg-gray-500 bg-transparent'}`} />
+                            <span>{sub.name}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
                   )}
-                </button>
+                </div>
               )
             })}
           </nav>
         </div>
 
-        <div>
-          <p className="text-[9px] font-display font-bold tracking-widest text-zg-gray-500 uppercase px-2 mb-2">SUPPORT</p>
-          <nav className="space-y-0.5">
-            {[
-              { name: 'Help & Docs', icon: HelpCircle },
-              { name: 'Feedback', icon: MessageSquare }
-            ].map(({ name, icon: Icon }) => (
-              <button
-                key={name}
-                onClick={() => setActiveTab(name)}
-                className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all ${
-                  activeTab === name 
-                    ? 'bg-zg-vivid-blue/15 text-zg-vivid-blue font-bold border-l-2 border-zg-vivid-blue rounded-l-none' 
-                    : 'hover:bg-zg-gray-800 text-zg-gray-500 hover:text-white'
-                }`}
-              >
-                <Icon className="w-4 h-4 text-zg-gray-500" />
-                <span>{name}</span>
-              </button>
-            ))}
-          </nav>
-        </div>
+
       </div>
 
+      {/* ── Footer actions ─────────────────────────── */}
       <div className="p-4 border-t border-zg-gray-800 space-y-3">
-        <button
-          onClick={() => setActiveTab('Timesheet')}
-          className="w-full flex items-center justify-between bg-gradient-to-r from-zg-coral to-rose-500 text-white py-2 px-3.5 rounded-xl text-xs font-semibold shadow-sm hover:brightness-105 transition-all"
-        >
-          <span>Pending Review</span>
-          <span className="bg-white text-rose-600 w-5 h-5 rounded-full flex items-center justify-center font-bold text-[10px]">1</span>
-        </button>
+
 
         <button
-          onClick={() => setIsClockedIn(!isClockedIn)}
-          className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl font-bold text-xs transition-all ${
-            isClockedIn 
-              ? 'bg-zg-coral/10 text-zg-coral border border-zg-coral/20 hover:bg-zg-coral/20' 
-              : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-          }`}
+          onClick={() => isClockedIn ? setShowDayOutModal(true) : handleClockIn()}
+          className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl font-bold text-xs transition-all ${isClockedIn
+            ? 'bg-gradient-to-r from-zg-coral to-rose-500 text-white shadow-sm hover:brightness-105'
+            : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+            }`}
+          aria-pressed={isClockedIn}
+          aria-label={isClockedIn ? 'Clock out — end your day' : 'Clock in — start your day'}
         >
-          <Clock className="w-4 h-4" />
-          {isClockedIn ? 'Day Out (Clock Out)' : 'Day In (Clock In)'}
+          <Clock className="w-4 h-4" aria-hidden="true" />
+          {isClockedIn ? 'Day Out ' : 'Day In '}
         </button>
 
+        {/* User profile */}
         <div className="flex items-center gap-2.5 pt-1">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1490FE] to-[#a855f7] text-white font-bold text-xs flex items-center justify-center flex-shrink-0">D</div>
+          <div
+            className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1490FE] to-[#a855f7] text-white font-bold text-xs flex items-center justify-center flex-shrink-0"
+            aria-hidden="true"
+          >
+            D
+          </div>
           <div className="min-w-0">
-            <span className="font-semibold text-xs text-white block truncate">Dhaval Patel</span>
+            <span className="font-semibold text-xs text-white block truncate">
+              Dhaval Patel
+            </span>
             <span className="text-[10px] text-zg-gray-500">Software Engineer</span>
           </div>
         </div>
@@ -138,4 +231,5 @@ export const Sidebar: React.FC = () => {
     </aside>
   )
 }
+
 export default Sidebar

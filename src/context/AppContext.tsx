@@ -84,6 +84,14 @@ interface AppContextType {
   timelogTypeFilter: string
   setTimelogTypeFilter: (s: string) => void
 
+  // Day Out Modal state
+  showDayOutModal: boolean
+  setShowDayOutModal: (show: boolean) => void
+  sendDailyReportEmail: boolean
+  setSendDailyReportEmail: (send: boolean) => void
+  handleConfirmClockOut: () => void
+  handleClockIn: () => void
+
   // Floating timer widget state
   showTimerWidget: boolean
   setShowTimerWidget: (show: boolean) => void
@@ -103,6 +111,8 @@ interface AppContextType {
   setManualEndTime: (s: string) => void
   manualDuration: string
   setManualDuration: (s: string) => void
+  manualLogDate: string
+  setManualLogDate: (s: string) => void
 
   // Handlers
   handleAddProject: (e: React.FormEvent) => void
@@ -132,11 +142,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [clockSubTab, setClockSubTab] = useState<'System' | 'Biometrics'>('System')
   const [watchlist, setWatchlist] = useState<WatchlistProject[]>([{ id: '1', name: 'Freightro' }])
   const [showAddProjectModal, setShowAddProjectModal] = useState(false)
+  const [showDayOutModal, setShowDayOutModal] = useState(false)
+  const [sendDailyReportEmail, setSendDailyReportEmail] = useState(false)
   const [selectedProjectToAdd, setSelectedProjectToAdd] = useState('Freightro')
   const [availableProjects] = useState<string[]>(availableProjectsList)
 
   const [clockSessions, setClockSessions] = useState<ClockSession[]>(initialClockSessions)
-  const [biometricLogs] = useState<BiometricLog[]>(initialBiometricLogs)
+  const [biometricLogs, setBiometricLogs] = useState<BiometricLog[]>(initialBiometricLogs)
 
   // Task entries
   const [taskTimeLogView, setTaskTimeLogView] = useState<'Daily' | 'Weekly'>('Daily')
@@ -172,6 +184,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [manualStartTime, setManualStartTime] = useState('')
   const [manualEndTime, setManualEndTime] = useState('')
   const [manualDuration, setManualDuration] = useState('')
+  const [manualLogDate, setManualLogDate] = useState('2026-07-06')
+
+  // Sync date ranges based on view mode (Daily / Weekly)
+  useEffect(() => {
+    if (taskTimeLogView === 'Weekly') {
+      const current = new Date(startDate)
+      const day = current.getDay()
+      const diffToMonday = current.getDate() - day + (day === 0 ? -6 : 1)
+      const monday = new Date(current.setDate(diffToMonday))
+      const sunday = new Date(monday)
+      sunday.setDate(monday.getDate() + 6)
+
+      if (startDate.getTime() !== monday.getTime() || endDate.getTime() !== sunday.getTime()) {
+        setStartDate(monday)
+        setEndDate(sunday)
+      }
+    } else {
+      if (endDate.getTime() !== startDate.getTime()) {
+        setEndDate(new Date(startDate))
+      }
+    }
+  }, [startDate, taskTimeLogView])
 
   // Live timer side effect
   useEffect(() => {
@@ -272,7 +306,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       timeRange: formattedRange,
       duration: durationStr,
       canEdit: true,
-      date: '2026-07-06',
+      date: manualLogDate,
       ticket: ''
     }
 
@@ -287,6 +321,100 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setManualEndTime('')
     setManualProject('')
     setManualDuration('')
+    setManualLogDate('2026-07-06')
+  }
+
+  const getCurrentTimeAMPM = () => {
+    const d = new Date()
+    let hrs = d.getHours()
+    const mins = String(d.getMinutes()).padStart(2, '0')
+    const ampm = hrs >= 12 ? 'PM' : 'AM'
+    hrs = hrs % 12
+    if (hrs === 0) hrs = 12
+    return `${hrs}:${mins} ${ampm}`
+  }
+
+  const calculateDuration = (inTime: string, outTime: string) => {
+    const parseTime = (tStr: string) => {
+      const match = tStr.trim().match(/^(\d+):(\d+)\s*(AM|PM)$/i)
+      if (!match) return 0
+      let hrs = parseInt(match[1], 10)
+      const mins = parseInt(match[2], 10)
+      const ampm = match[3].toUpperCase()
+      if (ampm === 'PM' && hrs < 12) hrs += 12
+      if (ampm === 'AM' && hrs === 12) hrs = 0
+      return hrs * 60 + mins
+    }
+    let inMin = parseTime(inTime)
+    let outMin = parseTime(outTime)
+    if (outMin < inMin) outMin += 24 * 60
+    const diff = outMin - inMin
+    const hrs = Math.floor(diff / 60)
+    const mins = diff % 60
+    return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`
+  }
+
+  const handleConfirmClockOut = () => {
+    const currentTime = getCurrentTimeAMPM()
+    setClockSessions(prev =>
+      prev.map(s => {
+        if (s.isActive) {
+          const duration = calculateDuration(s.inTime, currentTime)
+          return {
+            ...s,
+            isActive: false,
+            outTime: currentTime,
+            duration
+          }
+        }
+        return s
+      })
+    )
+    
+    // Add biometric log
+    const timeStr = currentTime.toLowerCase()
+    setBiometricLogs(prev => [
+      {
+        id: Date.now(),
+        user: 'Dhaval Patel',
+        type: 'clock-out',
+        time: timeStr,
+        location: 'staff passage out',
+        relativeTime: 'just now'
+      },
+      ...prev
+    ])
+
+    setIsClockedIn(false)
+    setShowDayOutModal(false)
+  }
+
+  const handleClockIn = () => {
+    const currentTime = getCurrentTimeAMPM()
+    setClockSessions(prev => [
+      {
+        id: Date.now(),
+        inTime: currentTime,
+        outTime: '-',
+        duration: '-',
+        isActive: true
+      },
+      ...prev
+    ])
+    
+    setBiometricLogs(prev => [
+      {
+        id: Date.now(),
+        user: 'Dhaval Patel',
+        type: 'clock-in',
+        time: currentTime.toLowerCase(),
+        location: 'staff passage in',
+        relativeTime: 'just now'
+      },
+      ...prev
+    ])
+    
+    setIsClockedIn(true)
   }
 
   return (
@@ -374,7 +502,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         saveEditing,
         deleteEntry,
         saveManualLog,
-        clearManualLog
+        clearManualLog,
+        showDayOutModal,
+        setShowDayOutModal,
+        sendDailyReportEmail,
+        setSendDailyReportEmail,
+        handleConfirmClockOut,
+        handleClockIn,
+        manualLogDate,
+        setManualLogDate
       }}
     >
       {children}

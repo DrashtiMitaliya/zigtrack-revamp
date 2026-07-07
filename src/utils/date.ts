@@ -1,4 +1,4 @@
-ight// Formatting Date objects to "Mon, Jul 06, 2026"
+// Formatting Date objects to "Mon, Jul 06, 2026"
 export const formatDateString = (date: Date): string => {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
