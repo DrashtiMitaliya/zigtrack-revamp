@@ -139,9 +139,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
   const nonBillableStrokeDash = circ * (nonBillablePercent / 100)
 
   return (
-    <div className="flex-1 overflow-hidden flex flex-col bg-zg-whitesmoke text-zg-chinese-black">
+    <div className="flex-1 overflow-hidden flex flex-col bg-zg-whitesmoke dark:bg-[#1a1d27] text-zg-chinese-black dark:text-[#e8eaf0]">
       {/* ─── Detail View Header ──────────────────────────────────────────────── */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 flex-shrink-0">
+      <header className="bg-white dark:bg-[#242838] border-b border-slate-200 dark:border-[#3a4060] px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 flex-shrink-0">
         
         {/* Project Selector / Name with Left Back Button */}
         <div className="flex items-center gap-3 relative">
@@ -150,7 +150,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             variant="ghost"
             size="sm"
             iconOnly
-            className="bg-slate-50 hover:bg-slate-100 text-slate-500 border border-slate-200 rounded-xl cursor-pointer"
+            className="bg-slate-50 dark:bg-[#2e3347] hover:bg-slate-100 dark:hover:bg-[#3a4060] text-slate-500 dark:text-[#8892aa] border border-slate-200 dark:border-[#3a4060] rounded-xl cursor-pointer"
             title="Go back to projects list"
             aria-label="Go back to projects list"
           >
@@ -162,10 +162,10 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-1.5 cursor-pointer select-none" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-              <h2 className="font-display font-black text-base text-slate-800 tracking-tight">
+              <h2 className="font-display font-black text-base text-slate-800 dark:text-[#e8eaf0] tracking-tight">
                 {project.name}
               </h2>
-              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-[#8892aa] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </div>
             <p className="text-[10px] text-slate-400 font-semibold tracking-wide uppercase mt-0.5">
               Project Dashboard
@@ -174,8 +174,8 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
 
           {/* Project switch dropdown menu */}
           {isDropdownOpen && (
-            <div className="absolute top-12 left-0 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 py-2 animate-in fade-in slide-in-from-top-2 duration-150">
-              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-4 py-1.5 border-b border-slate-100">
+            <div className="absolute top-12 left-0 w-64 bg-white dark:bg-[#2e3347] border border-slate-200 dark:border-[#3a4060] rounded-2xl shadow-xl dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] z-50 py-2 animate-in fade-in slide-in-from-top-2 duration-150">
+              <p className="text-[9px] font-bold text-slate-400 dark:text-[#6b7595] uppercase tracking-widest px-4 py-1.5 border-b border-slate-100 dark:border-[#3a4060]">
                 Switch Project
               </p>
               {projects.map(p => (
@@ -185,8 +185,8 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                     onSelectProject(p.id)
                     setIsDropdownOpen(false)
                   }}
-                  className={`w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-50 transition-colors flex items-center gap-2 ${
-                    p.id === project.id ? 'text-[var(--accent)] bg-[#EFF6FF]' : 'text-slate-650'
+                  className={`w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-[#3a4060] transition-colors flex items-center gap-2 ${
+                    p.id === project.id ? 'text-[var(--accent)] bg-[#EFF6FF] dark:bg-[#1490FE]/15' : 'text-slate-650 dark:text-[#c4cade]'
                   }`}
                 >
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: p.color }} />
@@ -198,7 +198,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
         </div>
 
         {/* Sub-tab Navigation */}
-        <nav className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl md:mx-auto">
+        <nav className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#2e3347] p-1.5 rounded-2xl md:mx-auto">
           {([
             { key: 'Summary', icon: FileText },
             { key: 'Team', icon: Users },
@@ -213,8 +213,8 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
               onClick={() => setActiveTab(key)}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 activeTab === key
-                  ? 'bg-white text-[var(--accent)] shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-white dark:bg-[#3a4060] text-[var(--accent)] shadow-xs'
+                  : 'text-slate-500 dark:text-[#8892aa] hover:text-slate-800 dark:hover:text-[#e8eaf0]'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -237,9 +237,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
               
               {/* Project Overview Card (6 cols) */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs xl:col-span-5 flex flex-col justify-between">
+              <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs xl:col-span-5 flex flex-col justify-between">
                 <div className="space-y-4">
-                  <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+                  <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                     Project Overview
                   </h3>
                   
@@ -260,7 +260,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {project.scope.map((tag, i) => (
-                        <span key={i} className="text-[10px] font-extrabold px-3 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200">
+                        <span key={i} className="text-[10px] font-extrabold px-3 py-1 rounded-lg bg-slate-100 dark:bg-[#2e3347] text-slate-600 dark:text-[#a8b0c8] border border-slate-200 dark:border-[#3a4060]">
                           {tag}
                         </span>
                       ))}
@@ -268,7 +268,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 mt-6 flex items-center justify-between">
+                <div className="pt-4 border-t border-slate-100 dark:border-[#3a4060] mt-6 flex items-center justify-between">
                   <div>
                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">
                       Project Status
@@ -279,7 +279,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">
                       Cost Type
                     </p>
-                    <span className="text-[10px] font-extrabold px-3 py-1 rounded-lg bg-[#ECFDF5] text-[#059669] border border-[#A7F3D0]">
+                    <span className="text-[10px] font-extrabold px-3 py-1 rounded-lg bg-[#ECFDF5] dark:bg-emerald-500/10 text-[#059669] dark:text-emerald-400 border border-[#A7F3D0] dark:border-emerald-500/25">
                       {project.costType}
                     </span>
                   </div>
@@ -287,33 +287,33 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
               </div>
 
               {/* Project Stats (4 cols) */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs xl:col-span-4 grid grid-cols-2 gap-4">
-                <div className="col-span-2 border-b border-slate-100 pb-2">
-                  <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+              <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs xl:col-span-4 grid grid-cols-2 gap-4">
+                <div className="col-span-2 border-b border-slate-100 dark:border-[#3a4060] pb-2">
+                  <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                     Project Metadata
                   </h3>
                 </div>
 
                 <div className="space-y-0.5">
                   <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Client Name</p>
-                  <p className="text-sm font-black text-slate-800">{project.name === 'ES AI Assessment' ? 'ES Dubai' : 'Internal Client'}</p>
+                  <p className="text-sm font-black text-slate-800 dark:text-[#e8eaf0]">{project.name === 'ES AI Assessment' ? 'ES Dubai' : 'Internal Client'}</p>
                 </div>
 
                 <div className="space-y-0.5">
                   <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Project Code</p>
-                  <p className="text-sm font-black text-slate-800 font-mono">
+                  <p className="text-sm font-black text-slate-800 dark:text-[#e8eaf0] font-mono">
                     {project.name === 'ES AI Assessment' ? 'ESAIA' : project.name.split(' ').map(w => w.charAt(0)).join('').toUpperCase()}
                   </p>
                 </div>
 
-                <div className="space-y-0.5 pt-2 border-t border-slate-50">
+                <div className="space-y-0.5 pt-2 border-t border-slate-50 dark:border-[#2e3347]">
                   <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Time Spent</p>
-                  <p className="text-sm font-black text-slate-700 font-mono">{project.timeSpent}</p>
+                  <p className="text-sm font-black text-slate-700 dark:text-[#c4cade] font-mono">{project.timeSpent}</p>
                 </div>
 
-                <div className="space-y-0.5 pt-2 border-t border-slate-50">
+                <div className="space-y-0.5 pt-2 border-t border-slate-50 dark:border-[#2e3347]">
                   <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Planned Limit</p>
-                  <p className="text-sm font-black text-slate-700 font-mono">{project.maxTimePlanned}</p>
+                  <p className="text-sm font-black text-slate-700 dark:text-[#c4cade] font-mono">{project.maxTimePlanned}</p>
                 </div>
 
                 <div className="space-y-0.5 col-span-2 pt-3 border-t border-slate-100">
@@ -323,15 +323,15 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
               </div>
 
               {/* Pie Chart Card (3 cols) */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs xl:col-span-3 flex flex-col items-center justify-center">
-                <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider mb-4 self-start">
+              <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs xl:col-span-3 flex flex-col items-center justify-center">
+                <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider mb-4 self-start">
                   Billable Ratio
                 </h3>
 
                 <div className="relative w-36 h-36 flex items-center justify-center">
                   <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                     {/* Background track circle */}
-                    <circle cx="50" cy="50" r={radius} fill="transparent" stroke="#E2E8F0" strokeWidth="12" />
+                    <circle cx="50" cy="50" r={radius} fill="transparent" stroke={document.documentElement.classList.contains('dark') ? '#2e3347' : '#E2E8F0'} strokeWidth="12" />
                     
                     {/* Billable Arc (Blue) */}
                     <circle
@@ -363,7 +363,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
 
                   {/* Inner text overlay */}
                   <div className="absolute text-center">
-                    <span className="block text-lg font-black text-slate-800 font-mono leading-none">
+                    <span className="block text-lg font-black text-slate-800 dark:text-[#e8eaf0] font-mono leading-none">
                       {billablePercent}%
                     </span>
                     <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1 block">
@@ -376,11 +376,11 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                 <div className="flex gap-4 mt-4 text-[10px] font-bold">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#1490FE]" />
-                    <span className="text-slate-600">Billable ({billablePercent}%)</span>
+                    <span className="text-slate-600 dark:text-[#a8b0c8]">Billable ({billablePercent}%)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#FF6347]" />
-                    <span className="text-slate-600">Non-Billable ({nonBillablePercent}%)</span>
+                    <span className="text-slate-600 dark:text-[#a8b0c8]">Non-Billable ({nonBillablePercent}%)</span>
                   </div>
                 </div>
               </div>
@@ -388,25 +388,25 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             </div>
 
             {/* Timeline Overview Section */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
-              <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+            <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs space-y-4">
+              <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                 Timeline Overview
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { label: 'Estimated Start Date', date: project.expectedStartDate, icon: Calendar, color: 'text-blue-500 bg-blue-50 border-blue-100' },
-                  { label: 'Estimated End Date', date: project.expectedEndDate, icon: Calendar, color: 'text-indigo-500 bg-indigo-50 border-indigo-100' },
-                  { label: 'Actual Start Date', date: project.actualStartDate, icon: Calendar, color: 'text-green-500 bg-green-50 border-green-100' },
-                  { label: 'Actual End Date', date: project.actualEndDate, icon: Calendar, color: 'text-rose-500 bg-rose-50 border-rose-100' },
-                ].map(({ label, date, icon: Icon, color }, i) => (
-                  <div key={i} className={`p-4 rounded-2xl border flex items-center gap-4 ${color}`}>
-                    <div className="p-2.5 rounded-xl bg-white shadow-xs">
+                  { label: 'Estimated Start Date', date: project.expectedStartDate, icon: Calendar, light: 'text-blue-500 bg-blue-50 border-blue-100', dark: 'dark:bg-[#1490FE]/10 dark:border-[#1490FE]/20 dark:text-[#93c5fd]' },
+                  { label: 'Estimated End Date', date: project.expectedEndDate, icon: Calendar, light: 'text-indigo-500 bg-indigo-50 border-indigo-100', dark: 'dark:bg-indigo-500/10 dark:border-indigo-500/20 dark:text-indigo-300' },
+                  { label: 'Actual Start Date', date: project.actualStartDate, icon: Calendar, light: 'text-green-500 bg-green-50 border-green-100', dark: 'dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400' },
+                  { label: 'Actual End Date', date: project.actualEndDate, icon: Calendar, light: 'text-rose-500 bg-rose-50 border-rose-100', dark: 'dark:bg-rose-500/10 dark:border-rose-500/20 dark:text-rose-400' },
+                ].map(({ label, date, icon: Icon, light, dark }, i) => (
+                  <div key={i} className={`p-4 rounded-2xl border flex items-center gap-4 ${light} ${dark}`}>
+                    <div className="p-2.5 rounded-xl bg-white dark:bg-[#2e3347] shadow-xs">
                       <Icon className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">{label}</p>
-                      <p className="text-xs font-black text-slate-850 mt-0.5">Start: {date}</p>
+                      <p className="text-[9px] font-extrabold text-slate-400 dark:text-current/70 uppercase tracking-wider">{label}</p>
+                      <p className="text-xs font-black text-slate-850 dark:text-current mt-0.5">Start: {date}</p>
                     </div>
                   </div>
                 ))}
@@ -417,19 +417,19 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               
               {/* QAssure Report Cards (8 cols) */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs lg:col-span-8 space-y-4">
-                <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+              <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs lg:col-span-8 space-y-4">
+                <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                   QAssure Report Summary
                 </h3>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   {[
-                    { label: 'Total Defects', value: defects.length, bg: 'bg-purple-50 border-purple-100 text-purple-700' },
-                    { label: 'Open', value: defects.filter(d => d.status === 'Open').length, bg: 'bg-rose-50 border-rose-100 text-rose-700' },
-                    { label: 'Reopen', value: defects.filter(d => d.status === 'Reopen').length, bg: 'bg-amber-50 border-amber-100 text-amber-700' },
-                    { label: 'Resolved', value: defects.filter(d => d.status === 'Resolved').length, bg: 'bg-emerald-50 border-emerald-100 text-emerald-700' },
-                    { label: 'Not An Issue', value: defects.filter(d => d.severity === 'Low').length, bg: 'bg-sky-50 border-sky-100 text-sky-700' },
-                    { label: 'Close', value: defects.filter(d => d.status === 'Close').length, bg: 'bg-slate-50 border-slate-100 text-slate-700' },
+                    { label: 'Total Defects', value: defects.length, bg: 'bg-purple-50 dark:bg-purple-500/10 border-purple-100 dark:border-purple-500/20 text-purple-700 dark:text-purple-400' },
+                    { label: 'Open', value: defects.filter(d => d.status === 'Open').length, bg: 'bg-rose-50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20 text-rose-700 dark:text-rose-400' },
+                    { label: 'Reopen', value: defects.filter(d => d.status === 'Reopen').length, bg: 'bg-amber-50 dark:bg-amber-500/10 border-amber-100 dark:border-amber-500/20 text-amber-700 dark:text-amber-400' },
+                    { label: 'Resolved', value: defects.filter(d => d.status === 'Resolved').length, bg: 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400' },
+                    { label: 'Not An Issue', value: defects.filter(d => d.severity === 'Low').length, bg: 'bg-sky-50 dark:bg-sky-500/10 border-sky-100 dark:border-sky-500/20 text-sky-700 dark:text-sky-400' },
+                    { label: 'Close', value: defects.filter(d => d.status === 'Close').length, bg: 'bg-slate-50 dark:bg-[#2e3347] border-slate-100 dark:border-[#3a4060] text-slate-700 dark:text-[#a8b0c8]' },
                   ].map((stat, i) => (
                     <div key={i} className={`p-4 rounded-2xl border text-center space-y-1 hover:shadow-xs transition-shadow ${stat.bg}`}>
                       <p className="text-[9px] font-extrabold uppercase tracking-wider truncate">
@@ -444,32 +444,32 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
               </div>
 
               {/* Notifications Panel (4 cols) */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs lg:col-span-4 flex flex-col justify-between">
+              <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs lg:col-span-4 flex flex-col justify-between">
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <Bell className="w-4 h-4 text-amber-500" />
-                    <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+                    <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                       Notifications
                     </h3>
                   </div>
 
                   <div className="space-y-3">
-                    <div className="bg-[#EFF6FF] border border-[#BFDBFE]/60 rounded-2xl p-3 flex gap-2.5">
+                    <div className="bg-[#EFF6FF] dark:bg-[#1490FE]/10 border border-[#BFDBFE]/60 dark:border-[#1490FE]/25 rounded-2xl p-3 flex gap-2.5">
                       <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5 flex-shrink-0" />
-                      <p className="text-xs text-slate-650 font-semibold leading-relaxed">
-                        Pruthvi Darji approved Pull Request <span className="text-slate-800 font-bold">#582</span>.
+                      <p className="text-xs text-slate-650 dark:text-[#a8b0c8] font-semibold leading-relaxed">
+                        Pruthvi Darji approved Pull Request <span className="text-slate-800 dark:text-[#e8eaf0] font-bold">#582</span>.
                       </p>
                     </div>
-                    <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-3 flex gap-2.5">
+                    <div className="bg-slate-50 dark:bg-[#2e3347] border border-slate-200/60 dark:border-[#3a4060] rounded-2xl p-3 flex gap-2.5">
                       <div className="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1.5 flex-shrink-0" />
-                      <p className="text-xs text-slate-650 font-semibold leading-relaxed">
-                        Dhaval Patel updated task description for <span className="text-slate-850 font-bold">ZIG-219</span>.
+                      <p className="text-xs text-slate-650 dark:text-[#a8b0c8] font-semibold leading-relaxed">
+                        Dhaval Patel updated task description for <span className="text-slate-850 dark:text-[#e8eaf0] font-bold">ZIG-219</span>.
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-start gap-2.5 text-[10px] text-amber-800 font-medium mt-4">
+                <div className="bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/25 rounded-2xl p-3 flex items-start gap-2.5 text-[10px] text-amber-800 dark:text-amber-400 font-medium mt-4">
                   <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
                   <span>Next sprint planning is scheduled for July 12th. Please ensure all time log entries are submitted by Friday.</span>
                 </div>
@@ -484,9 +484,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             TEAM TAB
         ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'Team' && (
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6">
+          <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs space-y-6">
             <div>
-              <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+              <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                 Project Resource Allocation
               </h3>
               <p className="text-xs text-slate-400 font-semibold mt-1">
@@ -499,15 +499,15 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                 const info = getMemberDetails(initial)
                 const colorCls = avatarColors[i % 5]
                 return (
-                  <div key={i} className="border border-slate-100 hover:border-slate-200 rounded-2xl p-4.5 bg-slate-50/50 hover:bg-white hover:shadow-xs transition-all flex items-center gap-4 group">
+                  <div key={i} className="border border-slate-100 dark:border-[#3a4060] hover:border-slate-200 dark:hover:border-[#4a5270] rounded-2xl p-4.5 bg-slate-50/50 dark:bg-[#2e3347]/50 hover:bg-white dark:hover:bg-[#2e3347] hover:shadow-xs transition-all flex items-center gap-4 group">
                     <div className={`w-11 h-11 rounded-full ${colorCls} text-white flex items-center justify-center font-bold text-sm shadow-xs relative flex-shrink-0 group-hover:scale-105 transition-transform`}>
                       {initial}
                       <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white" title="Active now" />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="text-xs font-black text-slate-800 truncate">{info.name}</h4>
+                      <h4 className="text-xs font-black text-slate-800 dark:text-[#e8eaf0] truncate">{info.name}</h4>
                       <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">{info.role}</p>
-                      <span className="inline-block mt-2 text-[9px] font-extrabold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
+                      <span className="inline-block mt-2 text-[9px] font-extrabold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded-md">
                         Allocated: 100%
                       </span>
                     </div>
@@ -522,9 +522,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             LIST TAB
         ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'List' && (
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6">
+          <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs space-y-6">
             <div>
-              <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+              <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                 Tasks & Checklist
               </h3>
               <p className="text-xs text-slate-400 font-semibold mt-1">
@@ -539,13 +539,13 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                 value={newTaskText}
                 onChange={e => setNewTaskText(e.target.value)}
                 placeholder="What needs to be done?"
-                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 outline-none focus:bg-white focus:border-[var(--accent)] transition-all font-medium"
+                className="flex-1 bg-slate-50 dark:bg-[#2e3347] border border-slate-200 dark:border-[#3a4060] rounded-xl px-4 py-2.5 text-xs text-slate-800 dark:text-[#c4cade] outline-none focus:bg-white dark:focus:bg-[#2e3347] focus:border-[var(--accent)] transition-all font-medium placeholder:text-slate-400 dark:placeholder:text-[#6b7595]"
               />
               <div className="flex gap-2">
                 <select
                   value={newTaskPriority}
                   onChange={e => setNewTaskPriority(e.target.value as any)}
-                  className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-650 font-bold outline-none cursor-pointer focus:bg-white"
+                  className="bg-slate-50 dark:bg-[#2e3347] border border-slate-200 dark:border-[#3a4060] rounded-xl px-3 py-2.5 text-xs text-slate-650 dark:text-[#c4cade] font-bold outline-none cursor-pointer focus:bg-white dark:focus:bg-[#2e3347]"
                 >
                   <option value="High">High</option>
                   <option value="Medium">Medium</option>
@@ -562,7 +562,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             </form>
 
             {/* Task list list */}
-            <div className="divide-y divide-slate-100 max-w-3xl">
+            <div className="divide-y divide-slate-100 dark:divide-[#3a4060] max-w-3xl">
               {tasks.map(t => (
                 <div key={t.id} className="py-3.5 flex items-center justify-between gap-4 group">
                   <div className="flex items-center gap-3 min-w-0">
@@ -573,16 +573,16 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                     >
                       {t.completed ? <CheckCircle2 className="w-5 h-5 fill-current" /> : <Circle className="w-5 h-5" />}
                     </button>
-                    <span className={`text-xs font-semibold leading-relaxed truncate ${t.completed ? 'text-slate-400 line-through' : 'text-slate-700'}`}>
+                    <span className={`text-xs font-semibold leading-relaxed truncate ${t.completed ? 'text-slate-400 dark:text-[#6b7595] line-through' : 'text-slate-700 dark:text-[#c4cade]'}`}>
                       {t.text}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
-                      t.priority === 'High' ? 'bg-rose-50 text-rose-600 border border-rose-100' :
-                      t.priority === 'Medium' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
-                      'bg-slate-100 text-slate-500 border border-slate-200'
+                      t.priority === 'High' ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-500/20' :
+                      t.priority === 'Medium' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/20' :
+                      'bg-slate-100 dark:bg-[#2e3347] text-slate-500 dark:text-[#8892aa] border border-slate-200 dark:border-[#3a4060]'
                     }`}>
                       {t.priority}
                     </span>
@@ -605,9 +605,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             MASTER PLAN TAB
         ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'Master Plan' && (
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6">
+          <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs space-y-6">
             <div>
-              <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+              <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                 Project Milestone Roadmap
               </h3>
               <p className="text-xs text-slate-400 font-semibold mt-1">
@@ -615,7 +615,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
               </p>
             </div>
 
-            <div className="relative pl-6 border-l-2 border-slate-100 space-y-8 max-w-2xl py-2">
+            <div className="relative pl-6 border-l-2 border-slate-100 dark:border-[#3a4060] space-y-8 max-w-2xl py-2">
               {[
                 { phase: 'Phase 1: Architecture & Layout Discovery', date: 'March 2025', desc: 'Requirements analysis, API specs defined, wireframes completed, brand style-guide aligned.', status: 'Completed' },
                 { phase: 'Phase 2: UI Engineering & Design System Integration', date: 'April 2025', desc: 'Vite build initialization, design tokens mapping, CSS setup, basic view templates built.', status: 'Completed' },
@@ -633,17 +633,17 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                   
                   <div className="space-y-1">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                      <h4 className="text-xs font-black text-slate-850">{m.phase}</h4>
+                      <h4 className="text-xs font-black text-slate-850 dark:text-[#e8eaf0]">{m.phase}</h4>
                       <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md self-start ${
-                        m.status === 'Completed' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
-                        m.status === 'Active' ? 'bg-blue-50 text-blue-600 border border-blue-100' :
-                        'bg-slate-100 text-slate-400 border border-slate-200'
+                        m.status === 'Completed' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20' :
+                        m.status === 'Active' ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-500/20' :
+                        'bg-slate-100 dark:bg-[#2e3347] text-slate-400 dark:text-[#6b7595] border border-slate-200 dark:border-[#3a4060]'
                       }`}>
                         {m.status}
                       </span>
                     </div>
                     <p className="text-[9px] font-bold text-slate-400">{m.date}</p>
-                    <p className="text-xs text-slate-650 leading-relaxed font-semibold max-w-xl">{m.desc}</p>
+                    <p className="text-xs text-slate-650 dark:text-[#c4cade] leading-relaxed font-semibold max-w-xl">{m.desc}</p>
                   </div>
                 </div>
               ))}
@@ -655,9 +655,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             QASSURE TAB
         ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'QAssure' && (
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6">
+          <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs space-y-6">
             <div>
-              <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+              <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                 Defect Tracking Table
               </h3>
               <p className="text-xs text-slate-400 font-semibold mt-1">
@@ -665,37 +665,37 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
               </p>
             </div>
 
-            <div className="overflow-x-auto border border-slate-100 rounded-2xl shadow-xs">
+            <div className="overflow-x-auto border border-slate-100 dark:border-[#3a4060] rounded-2xl shadow-xs">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-slate-100 text-[10px] font-display font-bold text-slate-400 uppercase tracking-wider">
+                  <tr className="bg-slate-50 dark:bg-[#2e3347] border-b border-slate-100 dark:border-[#3a4060] text-[10px] font-display font-bold text-slate-400 dark:text-[#6b7595] uppercase tracking-wider">
                     <th className="py-3 px-4 w-[15%]">Bug ID</th>
                     <th className="py-3 px-4 w-[50%]">Defect Details</th>
                     <th className="py-3 px-4 w-[15%] text-center">Severity</th>
                     <th className="py-3 px-4 w-[20%] text-center">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-650 font-medium">
+                <tbody className="divide-y divide-slate-100 dark:divide-[#2e3347] text-slate-650 dark:text-[#c4cade] font-medium">
                   {defects.map(d => (
-                    <tr key={d.id} className="hover:bg-slate-55/30 transition-colors">
-                      <td className="py-3 px-4 font-black font-mono text-slate-800">{d.id}</td>
-                      <td className="py-3 px-4 text-slate-700 leading-relaxed font-semibold">{d.title}</td>
+                    <tr key={d.id} className="hover:bg-slate-55/30 dark:hover:bg-[#2e3347] transition-colors">
+                      <td className="py-3 px-4 font-black font-mono text-slate-800 dark:text-[#e8eaf0]">{d.id}</td>
+                      <td className="py-3 px-4 text-slate-700 dark:text-[#c4cade] leading-relaxed font-semibold">{d.title}</td>
                       <td className="py-3 px-4 text-center">
                         <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
-                          d.severity === 'Critical' ? 'bg-red-50 text-red-600 border border-red-100' :
-                          d.severity === 'High' ? 'bg-rose-50 text-rose-600 border border-rose-100' :
-                          d.severity === 'Medium' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
-                          'bg-slate-100 text-slate-450 border border-slate-200'
+                          d.severity === 'Critical' ? 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-500/20' :
+                          d.severity === 'High' ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-500/20' :
+                          d.severity === 'Medium' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/20' :
+                          'bg-slate-100 dark:bg-[#2e3347] text-slate-450 dark:text-[#8892aa] border border-slate-200 dark:border-[#3a4060]'
                         }`}>
                           {d.severity}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-center">
                         <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full inline-block ${
-                          d.status === 'Resolved' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
-                          d.status === 'Open' ? 'bg-rose-50 text-rose-600 border border-rose-100' :
-                          d.status === 'Close' ? 'bg-slate-100 text-slate-500 border border-slate-200' :
-                          'bg-amber-50 text-amber-600 border border-amber-100'
+                          d.status === 'Resolved' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20' :
+                          d.status === 'Open' ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-500/20' :
+                          d.status === 'Close' ? 'bg-slate-100 dark:bg-[#2e3347] text-slate-500 dark:text-[#8892aa] border border-slate-200 dark:border-[#3a4060]' :
+                          'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/20'
                         }`}>
                           {d.status}
                         </span>
@@ -712,9 +712,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             NOTES TAB
         ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'Notes' && (
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6">
+          <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs space-y-6">
             <div>
-              <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+              <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                 Project Notepad
               </h3>
               <p className="text-xs text-slate-400 font-semibold mt-1">
@@ -729,7 +729,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
                 onChange={e => setNewNoteText(e.target.value)}
                 placeholder="Type a note here... (Markdown supported)"
                 rows={3}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs text-slate-800 outline-none focus:bg-white focus:border-[var(--accent)] transition-all font-medium placeholder-slate-400"
+                className="w-full bg-slate-50 dark:bg-[#2e3347] border border-slate-200 dark:border-[#3a4060] rounded-2xl p-4 text-xs text-slate-800 dark:text-[#c4cade] outline-none focus:bg-white dark:focus:bg-[#2e3347] focus:border-[var(--accent)] transition-all font-medium placeholder-slate-400 dark:placeholder-[#6b7595]"
               />
               <button
                 type="submit"
@@ -743,9 +743,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             {/* Notes list */}
             <div className="space-y-4">
               {notes.map(n => (
-                <div key={n.id} className="p-4 rounded-2xl border border-slate-100 bg-slate-50/40 relative group">
+                <div key={n.id} className="p-4 rounded-2xl border border-slate-100 dark:border-[#3a4060] bg-slate-50/40 dark:bg-[#2e3347]/50 relative group">
                   <div className="flex justify-between items-start gap-4">
-                    <p className="text-xs text-slate-650 leading-relaxed font-semibold max-w-2xl">{n.text}</p>
+                    <p className="text-xs text-slate-650 dark:text-[#c4cade] leading-relaxed font-semibold max-w-2xl">{n.text}</p>
                     <button
                       type="button"
                       onClick={() => deleteNote(n.id)}
@@ -766,9 +766,9 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             PR REQUESTS TAB
         ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'PR Request' && (
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6">
+          <div className="bg-white dark:bg-[#242838] rounded-3xl p-6 border border-slate-200 dark:border-[#3a4060] shadow-xs space-y-6">
             <div>
-              <h3 className="font-display font-black text-sm text-slate-800 uppercase tracking-wider">
+              <h3 className="font-display font-black text-sm text-slate-800 dark:text-[#e8eaf0] uppercase tracking-wider">
                 Project Pull Requests
               </h3>
               <p className="text-xs text-slate-400 font-semibold mt-1">
@@ -777,37 +777,37 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             </div>
 
             {filteredPRs.length === 0 ? (
-              <div className="p-8 text-center border border-slate-100 rounded-2xl text-slate-400 text-xs font-semibold">
+              <div className="p-8 text-center border border-slate-100 dark:border-[#3a4060] rounded-2xl text-slate-400 dark:text-[#6b7595] text-xs font-semibold">
                 No PR requests found specifically for this project.
               </div>
             ) : (
-              <div className="overflow-x-auto border border-slate-100 rounded-2xl shadow-xs">
+              <div className="overflow-x-auto border border-slate-100 dark:border-[#3a4060] rounded-2xl shadow-xs">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-slate-100 text-[10px] font-display font-bold text-slate-400 uppercase tracking-wider">
+                    <tr className="bg-slate-50 dark:bg-[#2e3347] border-b border-slate-100 dark:border-[#3a4060] text-[10px] font-display font-bold text-slate-400 dark:text-[#6b7595] uppercase tracking-wider">
                       <th className="py-3 px-4 w-[40%]">PR Title</th>
                       <th className="py-3 px-4 w-[25%]">Reviewer</th>
                       <th className="py-3 px-4 w-[20%]">Generated By</th>
                       <th className="py-3 px-4 w-[15%] text-center">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-650 font-medium">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#2e3347] text-slate-650 dark:text-[#c4cade] font-medium">
                     {filteredPRs.map(pr => (
-                      <tr key={pr.id} className="hover:bg-slate-55/30 transition-colors">
-                        <td className="py-3.5 px-4 font-semibold text-slate-800 leading-relaxed">
-                          <a href={pr.prLink} target="_blank" rel="noopener noreferrer" className="hover:underline flex items-start gap-2 text-slate-700 font-bold hover:text-[var(--accent)]">
-                            <GitPullRequest className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                      <tr key={pr.id} className="hover:bg-slate-55/30 dark:hover:bg-[#2e3347] transition-colors">
+                        <td className="py-3.5 px-4 font-semibold text-slate-800 dark:text-[#e8eaf0] leading-relaxed">
+                          <a href={pr.prLink} target="_blank" rel="noopener noreferrer" className="hover:underline flex items-start gap-2 text-slate-700 dark:text-[#c4cade] font-bold hover:text-[var(--accent)]">
+                            <GitPullRequest className="w-4 h-4 text-slate-400 dark:text-[#6b7595] flex-shrink-0 mt-0.5" />
                             <span>{pr.title}</span>
                           </a>
-                          <span className="text-[9px] font-bold text-slate-400 block mt-1">{pr.date}</span>
+                          <span className="text-[9px] font-bold text-slate-400 dark:text-[#6b7595] block mt-1">{pr.date}</span>
                         </td>
-                        <td className="py-3.5 px-4 font-bold text-slate-600">{pr.reviewBy}</td>
-                        <td className="py-3.5 px-4 text-slate-500 font-bold">{pr.prGeneratedBy}</td>
+                        <td className="py-3.5 px-4 font-bold text-slate-600 dark:text-[#a8b0c8]">{pr.reviewBy}</td>
+                        <td className="py-3.5 px-4 text-slate-500 dark:text-[#8892aa] font-bold">{pr.prGeneratedBy}</td>
                         <td className="py-3.5 px-4 text-center">
                           <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full inline-block ${
-                            pr.status === 'Approved' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
-                            pr.status === 'Open' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
-                            'bg-rose-50 text-rose-600 border border-rose-100'
+                            pr.status === 'Approved' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20' :
+                            pr.status === 'Open' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/20' :
+                            'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-500/20'
                           }`}>
                             {pr.status}
                           </span>
