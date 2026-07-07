@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-zg-vivid-blue: #1490FE;
+  --color-zg-chinese-black: #141414;
+  --color-zg-whitesmoke: #F5F5F5;
+  --color-zg-midnight-blue: #061D42;
+  --color-zg-sky-blue: #D9E8F5;
+  --color-zg-mustard: #EEC643;
+  --color-zg-coral: #FF6347;
+  --color-zg-white: #FFFFFF;
+  --color-zg-black: #000000;
+  
+  --color-zg-gray-800: #292929;
+  --color-zg-gray-700: #525252;
+  --color-zg-gray-500: #808080;
+  --color-zg-gray-300: #CCCCCC;
+
+  /* Fonts */
+  --font-display: 'Poppins', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+
+  /* Radii */
+  --radius-zg-sm: 6px;
+  --radius-zg-md: 8px;
+  --radius-zg-lg: 12px;
+  --radius-zg-xl: 24px;
+
+  /* Shadows */
+  --shadow-zg-sm: 0 1px 2px rgba(0,0,0,0.08);
+  --shadow-zg-md: 0 4px 12px rgba(0,0,0,0.12);
+  --shadow-zg-lg: 0 12px 40px rgba(0,0,0,0.25);
+}
+
+:root {
+  /* Semantic variables that can also be used as standard CSS custom properties */
+  --bg: #FFFFFF;
+  --bg-alt: #F5F5F5;
+  --bg-invert: #141414;
+  --fg: #141414;
+  --fg-muted: #808080;
+  --fg-invert: #F5F5F5;
+  --border: #CCCCCC;
+  --accent: #1490FE;
+  --accent-fg: #FFFFFF;
+  --brand-hero: #FF6347;
+  --card-gradient: linear-gradient(180deg, #061D42 0%, #1490FE 100%);
+  
+  --font-display: 'Poppins', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-alt);
+  color: var(--fg);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
