@@ -4,10 +4,13 @@ import {
   AlarmClock,
   LayoutDashboard,
   Bell,
-  Menu
+  Menu,
+  Play,
+  Pause
 } from 'lucide-react'
 import { useAppContext } from '../../context/AppContext'
-import { DatePickerWidget, DropdownSelect, SubTabBar } from '../common'
+import { DatePickerWidget, SubTabBar } from '../common'
+import FloatingTimerWidget from '../widgets/FloatingTimerWidget'
 
 interface HeaderProps {
   onMenuClick?: () => void
@@ -21,13 +24,28 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
     endDate,
     setEndDate,
     taskTimeLogView,
-    setTaskTimeLogView
+    setTaskTimeLogView,
+    isTimerRunning,
+    setIsTimerRunning,
+    secondsTracked,
+    timerProject,
+    showTimerWidget,
+    setShowTimerWidget
   } = useAppContext()
 
   const viewTabs = [
     { key: 'Daily' as const, label: 'Daily' },
     { key: 'Weekly' as const, label: 'Weekly' },
   ]
+
+
+
+  const formatTime = (s: number) => {
+    const h = Math.floor(s / 3600)
+    const m = Math.floor((s % 3600) / 60)
+    const sec = s % 60
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
+  }
 
   return (
     <header
@@ -39,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         {/* Mobile hamburger */}
         <button
           onClick={onMenuClick}
-          className="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors flex-shrink-0"
+          className="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors flex-shrink-0 cursor-pointer"
           aria-label="Open navigation menu"
         >
           <Menu className="w-5 h-5" />
@@ -101,24 +119,48 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           </div>
         )}
 
-        {/* Dashboard pending dropdown */}
-        {activeTab === 'Dashboards' && (
-          <div className="hidden sm:flex items-center gap-1.5">
-            <span className="text-[10px] font-bold text-slate-400 tracking-wider whitespace-nowrap">
-              PENDING:
-            </span>
-            <DropdownSelect
-              value="29-06-2026 To 05-07-2026"
-              onChange={() => {}}
-              variant="small"
-              options={[{ value: '29-06-2026 To 05-07-2026', label: '29-06-2026 To 05-07-2026' }]}
-            />
+
+        {/* Header Active Time Tracker (Beside notifications) */}
+        <div className="relative flex items-center header-time-tracker">
+          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 pl-3.5 pr-2 py-1 rounded-full shadow-xs">
+            <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setShowTimerWidget(!showTimerWidget)}>
+              <span className={`w-1.5 h-1.5 rounded-full ${isTimerRunning ? 'bg-emerald-500 animate-pulse' : 'bg-slate-350'}`} />
+              <span className="font-mono text-xs font-black text-slate-800 tracking-wider">
+                {formatTime(secondsTracked)}
+              </span>
+              {timerProject && (
+                <span className="hidden md:inline text-[9px] font-extrabold text-[#1490FE] bg-blue-50 border border-blue-100/50 px-2 py-0.5 rounded-md truncate max-w-[100px]" title={timerProject}>
+                  {timerProject}
+                </span>
+              )}
+            </div>
+            
+            <span className="w-px h-3.5 bg-slate-200" />
+            
+            <button
+              type="button"
+              onClick={() => setIsTimerRunning(!isTimerRunning)}
+              className={`w-6 h-6 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer text-white shadow-xs ${
+                isTimerRunning
+                  ? 'bg-gradient-to-r from-[#FF6347] to-rose-500'
+                  : 'bg-emerald-600 hover:bg-emerald-550'
+              }`}
+              title={isTimerRunning ? 'Pause Time Log' : 'Start Time Log'}
+            >
+              {isTimerRunning ? (
+                <Pause className="w-2.5 h-2.5 fill-white text-white" />
+              ) : (
+                <Play className="w-2.5 h-2.5 fill-white text-white ml-0.5" />
+              )}
+            </button>
           </div>
-        )}
+
+          <FloatingTimerWidget />
+        </div>
 
         {/* Notification bell */}
         <button
-          className="relative p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors flex-shrink-0"
+          className="relative p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors flex-shrink-0 cursor-pointer"
           aria-label="Notifications"
         >
           <Bell className="w-[18px] h-[18px]" />

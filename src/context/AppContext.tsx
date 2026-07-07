@@ -36,6 +36,8 @@ interface AppContextType {
   // Clock state
   isClockedIn: boolean
   setIsClockedIn: (inState: boolean) => void
+  isTimerRunning: boolean
+  setIsTimerRunning: (running: boolean) => void
   secondsTracked: number
   setSecondsTracked: React.Dispatch<React.SetStateAction<number>>
   bottomSeconds: number
@@ -137,6 +139,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Clock In/Out state
   const [isClockedIn, setIsClockedIn] = useState(true)
+  const [isTimerRunning, setIsTimerRunning] = useState(true)
   const [secondsTracked, setSecondsTracked] = useState(1855)
   const [bottomSeconds, setBottomSeconds] = useState(2566)
   const [clockSubTab, setClockSubTab] = useState<'System' | 'Biometrics'>('System')
@@ -207,12 +210,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, [startDate, taskTimeLogView])
 
-  // Live timer side effect
+  // Live biometric day timer side effect
   useEffect(() => {
     let interval: any = null
     if (isClockedIn) {
       interval = setInterval(() => {
-        setSecondsTracked((p) => p + 1)
         setBottomSeconds((p) => p + 1)
       }, 1000)
     }
@@ -220,6 +222,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (interval) clearInterval(interval)
     }
   }, [isClockedIn])
+
+  // Live active task time log timer side effect
+  useEffect(() => {
+    let interval: any = null
+    if (isTimerRunning) {
+      interval = setInterval(() => {
+        setSecondsTracked((p) => p + 1)
+      }, 1000)
+    }
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [isTimerRunning])
 
   // Handlers
   const handleAddProject = (e: React.FormEvent) => {
@@ -437,6 +452,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         availableProjects,
         isClockedIn,
         setIsClockedIn,
+        isTimerRunning,
+        setIsTimerRunning,
         secondsTracked,
         setSecondsTracked,
         bottomSeconds,

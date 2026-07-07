@@ -24,7 +24,7 @@ export const AppWrapper: React.FC<AppWrapperProps> = ({ children }) => {
       <div
         className={`
           fixed inset-y-0 left-0 z-[var(--z-sidebar)] flex-shrink-0
-          transform transition-transform duration-300 ease-in-out
+          transform transition-all duration-300 ease-in-out
           md:relative md:translate-x-0 md:z-auto md:flex
           ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}

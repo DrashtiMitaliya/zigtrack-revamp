@@ -143,8 +143,16 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
       {/* ─── Detail View Header ──────────────────────────────────────────────── */}
       <header className="bg-white border-b border-slate-200 px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 flex-shrink-0">
         
-        {/* Project Selector / Name */}
+        {/* Project Selector / Name with Left Back Button */}
         <div className="flex items-center gap-3 relative">
+          <button
+            onClick={onBack}
+            className="w-9 h-9 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-500 border border-slate-200 flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-xs cursor-pointer"
+            title="Go back to projects list"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+
           <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-extrabold shadow-sm" style={{ backgroundColor: project.color }}>
             {project.name.charAt(0)}
           </div>
@@ -210,15 +218,6 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             </button>
           ))}
         </nav>
-
-        {/* Back Button */}
-        <button
-          onClick={onBack}
-          className="flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs px-4 py-2.5 rounded-xl border border-slate-200 transition-all self-start md:self-auto hover:scale-101 active:scale-99"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </button>
       </header>
 
       {/* ─── Scrollable Tab Content ────────────────────────────────────────── */}

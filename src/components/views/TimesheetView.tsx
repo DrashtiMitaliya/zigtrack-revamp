@@ -15,7 +15,8 @@ import {
   FilterToolbar,
   EmptyState,
   Badge,
-  Button
+  Button,
+  TimePicker
 } from '../common'
 import { getLocalDateString, calculateTotalDuration } from '../../utils'
 import { type TaskTimeEntry } from '../../constants'
@@ -84,23 +85,21 @@ const EditRow: React.FC<EditRowProps> = ({ entry }) => {
           />
         </div>
 
-        {/* Time range */}
+        {/* Time range using custom TimePicker */}
         <div className="col-span-6 sm:col-span-2">
           <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 p-1.5 rounded-xl">
-            <input
-              type="time"
+            <TimePicker
               value={editStartTime}
-              onChange={e => setEditStartTime(e.target.value)}
-              className="w-full bg-transparent border-none text-[#141414] text-[11px] font-semibold font-mono outline-none text-center"
-              aria-label="Start time"
+              onChange={setEditStartTime}
+              variant="small"
+              className="w-full text-center"
             />
             <span className="text-slate-400 font-bold text-xs" aria-hidden="true">-</span>
-            <input
-              type="time"
+            <TimePicker
               value={editEndTime}
-              onChange={e => setEditEndTime(e.target.value)}
-              className="w-full bg-transparent border-none text-[#141414] text-[11px] font-semibold font-mono outline-none text-center"
-              aria-label="End time"
+              onChange={setEditEndTime}
+              variant="small"
+              className="w-full text-center"
             />
           </div>
           <p className="text-[9px] text-slate-400 font-semibold text-center mt-1">Start & End</p>

@@ -7,7 +7,7 @@ interface DropdownSelectProps {
   onChange: (val: string) => void
   options: DropdownOption[]
   placeholder?: string
-  variant?: 'light' | 'dark-glass' | 'small'
+  variant?: 'light' | 'dark-glass' | 'small' | 'input-field'
   className?: string
   id?: string
   isMulti?: boolean
@@ -46,17 +46,14 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
     if (isMulti) {
       let nextValues: string[]
       if (optValue === 'All') {
-        // Clicking "All" clears all other selections and keeps only "All"
         nextValues = ['All']
       } else {
-        // Clicking any other option clears "All"
         const withoutAll = selectedValues.filter(v => v !== 'All')
         if (withoutAll.includes(optValue)) {
           nextValues = withoutAll.filter(v => v !== optValue)
         } else {
           nextValues = [...withoutAll, optValue]
         }
-        // If no options are selected, default back to "All" (if "All" is in options)
         if (nextValues.length === 0 && options.some(o => o.value === 'All')) {
           nextValues = ['All']
         }
@@ -87,6 +84,9 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
 
   if (variant === 'light') {
     btnClass += `bg-slate-50 border ${isOpen ? 'border-[#1490FE] ring-2 ring-[#1490FE]/15 bg-white' : 'border-slate-200 hover:border-slate-300'} text-slate-700`
+  } else if (variant === 'input-field') {
+    btnClass = `w-full flex items-center justify-between font-semibold text-xs py-3.5 px-4 bg-slate-50/70 border ${isOpen ? 'border-[#1490FE] ring-4 ring-[#1490FE]/10 bg-white' : 'border-slate-200 hover:border-slate-300'} text-slate-800 outline-none cursor-pointer transition-all text-left truncate rounded-2xl`
+    iconColor = "text-slate-400"
   } else if (variant === 'dark-glass') {
     btnClass += `bg-white/10 backdrop-blur-md border ${isOpen ? 'border-white/35 bg-white/15' : 'border-white/10 hover:bg-white/15'} text-white`
     iconColor = "text-white/60"

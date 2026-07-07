@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   AlarmClock,
   Pencil,
@@ -13,6 +13,10 @@ import { useAppContext } from '../../context/AppContext'
 import { DropdownSelect, TimePicker, DatePickerWidget } from '../common'
 import { getLocalDateString } from '../../utils'
 
+/**
+ * FloatingTimerWidget — Absolute dropdown popover for editing time log entries.
+ * Anchored directly below the Header time tracking pill.
+ */
 export const FloatingTimerWidget: React.FC = () => {
   const {
     showTimerWidget,
@@ -31,30 +35,46 @@ export const FloatingTimerWidget: React.FC = () => {
     setManualStartTime,
     manualEndTime,
     setManualEndTime,
-    isClockedIn,
+    isTimerRunning,
+    setIsTimerRunning,
     secondsTracked,
     setSecondsTracked,
-    bottomSeconds,
     availableProjects,
     saveManualLog,
     clearManualLog,
-    setActiveTab,
-    setShowDayOutModal,
-    handleClockIn,
     manualLogDate,
     setManualLogDate
   } = useAppContext()
 
-  // Local interactive layout states
   const [isExpanded, setIsExpanded] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
+  // Listen for clicks outside of the popover card to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      // If target is no longer in the document (detached DOM node), ignore it!
+      if (!document.body.contains(target)) return
+      
+      // If clicking inside the active timer block itself, do not close the widget (let Header.tsx handle toggles)
+      if (target.closest('.header-time-tracker')) return
+
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShowTimerWidget(false)
+      }
+    }
+    if (showTimerWidget) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showTimerWidget, setShowTimerWidget])
 
   const parseDateStr = (dateStr: string): Date => {
     const parts = dateStr.split('-')
     if (parts.length === 3) {
       return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10))
     }
-    return new Date(2026, 6, 6)
+    return new Date()
   }
 
   const formatTime = (s: number) => {
@@ -64,54 +84,11 @@ export const FloatingTimerWidget: React.FC = () => {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
   }
 
-  const handleClockToggle = () => {
-    if (isClockedIn) {
-      setShowDayOutModal(true)
-    } else {
-      handleClockIn()
-    }
-  }
-
-  if (!showTimerWidget) {
-    // Collapsed state floating pills
-    return (
-      <div className="fixed bottom-5 right-5 flex flex-wrap items-center justify-end gap-2 z-35">
-        <button
-          onClick={() => {
-            setShowTimerWidget(true)
-            setActiveTab('Timesheet')
-          }}
-          className="flex items-center gap-2 bg-[#10B981] hover:bg-[#059669] text-white px-4 py-2.5 rounded-full shadow-lg text-xs font-bold transition-all hover:scale-103 active:scale-97"
-        >
-          <AlarmClock className="w-4 h-4" />
-          Time Log
-        </button>
-        <button
-          onClick={handleClockToggle}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg text-xs font-bold transition-all hover:scale-103 active:scale-97 ${
-            isClockedIn 
-              ? 'bg-gradient-to-r from-zg-coral to-rose-500 hover:brightness-105 text-white' 
-              : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-          }`}
-        >
-          {isClockedIn ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-          {isClockedIn ? `Clock Out  ${formatTime(bottomSeconds)}` : 'Clock In'}
-        </button>
-      </div>
-    )
-  }
-
-  // Dynamic layout styling: Solid green background to match Screenshot 3
-  const containerClass = 'bg-[#10B981] border border-[#0d9488]/30 shadow-[0_25px_60px_rgba(0,0,0,0.3)] text-white'
-
-  const headerIconColor = 'text-white/70 hover:text-white'
-  const dividerClass = 'bg-white/25'
-  const labelClass = 'text-white/80'
-
-  const textareaClass = 'w-full bg-white/10 border border-white/20 rounded-2xl p-3.5 text-xs text-white leading-relaxed outline-none resize-none placeholder-white/40 focus:bg-white/15 focus:border-white/30 transition-all font-medium'
 
 
-  // Dropdown list mappings
+  // Returns null when closed
+  if (!showTimerWidget) return null
+
   const projectDropdownOptions = availableProjects.map(p => ({ value: p, label: p }))
   const ticketDropdownOptions = [
     { value: 'ZIG-219', label: 'ZIG-219' },
@@ -120,233 +97,225 @@ export const FloatingTimerWidget: React.FC = () => {
   ]
 
   return (
-    <>
-      <div className="fixed inset-0 z-30 pointer-events-none" />
-      <div
-        className={`fixed bottom-[76px] right-4 left-4 sm:left-auto z-40 transition-all duration-300 ${
-          isExpanded ? 'sm:w-[720px]' : 'sm:w-[540px]'
-        }`}
-      >
-        <div className={`rounded-3xl overflow-hidden ${containerClass}`}>
-          {/* Header tabs bar */}
-          <div className="flex items-center justify-between px-5 pt-5 pb-3">
-            <div className="flex items-center gap-3.5 text-white text-sm font-semibold select-none">
-              <button
-                type="button"
-                onClick={() => setTimerSubTab('Timer')}
-                className={`flex items-center gap-1.5 transition-all py-1 border-b-2 ${
-                  timerSubTab === 'Timer' ? 'font-black opacity-100 border-white' : 'font-bold opacity-75 hover:opacity-100 border-transparent'
-                }`}
-              >
-                <AlarmClock className="w-3.5 h-3.5" />
-                Timer
-              </button>
-              <span className="text-white/30 font-normal">|</span>
-              <button
-                type="button"
-                onClick={() => setTimerSubTab('Manual')}
-                className={`flex items-center gap-1.5 transition-all py-1 border-b-2 ${
-                  timerSubTab === 'Manual' ? 'font-black opacity-100 border-white' : 'font-bold opacity-75 hover:opacity-100 border-transparent'
-                }`}
-              >
-                <Pencil className="w-3.5 h-3.5" />
-                Manual
-              </button>
-            </div>
+    <div 
+      ref={containerRef}
+      className={`absolute right-0 top-full mt-3.5 z-50 bg-white border border-slate-200 rounded-[28px] shadow-2xl flex flex-col justify-between overflow-visible animate-in fade-in slide-in-from-top-2 duration-200 pointer-events-auto ${
+        isExpanded ? 'w-[90vw] max-w-2xl sm:w-[640px]' : 'w-[90vw] max-w-lg sm:w-[480px]'
+      }`}
+    >
+      {/* Header */}
+      <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
+        <div className="flex items-center gap-3.5 text-slate-800 text-xs font-semibold select-none">
+          <button
+            type="button"
+            onClick={() => setTimerSubTab('Timer')}
+            className={`flex items-center gap-1.5 transition-all py-1 border-b-2 cursor-pointer ${
+              timerSubTab === 'Timer' ? 'font-black text-[#1490FE] border-[#1490FE]' : 'font-bold text-slate-450 hover:text-slate-700 border-transparent'
+            }`}
+          >
+            <AlarmClock className="w-3.5 h-3.5" />
+            Timer Log
+          </button>
+          <span className="text-slate-200 font-normal">|</span>
+          <button
+            type="button"
+            onClick={() => setTimerSubTab('Manual')}
+            className={`flex items-center gap-1.5 transition-all py-1 border-b-2 cursor-pointer ${
+              timerSubTab === 'Manual' ? 'font-black text-[#1490FE] border-[#1490FE]' : 'font-bold text-slate-450 hover:text-slate-700 border-transparent'
+            }`}
+          >
+            <Pencil className="w-3.5 h-3.5" />
+            Manual Log
+          </button>
+        </div>
 
-            <div className="flex items-center gap-1">
-              {/* Maximize/Minimize Layout Button */}
-              <button
-                type="button"
-                onClick={() => setIsExpanded(!isExpanded)}
-                className={`p-1.5 rounded-xl transition-colors ${headerIconColor} hidden sm:inline-block`}
-                title={isExpanded ? 'Minimize Widget' : 'Maximize Widget'}
-              >
-                {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-              </button>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-650 hover:bg-slate-50 transition-colors hidden sm:inline-block cursor-pointer"
+            title={isExpanded ? 'Minimize Widget' : 'Maximize Widget'}
+          >
+            {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+          </button>
 
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={() => setShowTimerWidget(false)}
-                className={`p-1.5 rounded-xl transition-colors ${headerIconColor}`}
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={() => setShowTimerWidget(false)}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-650 hover:bg-slate-50 transition-colors cursor-pointer"
+            title="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
 
-          <div className={`h-px mx-5 ${dividerClass}`} />
-
-          {/* Body Content */}
-          <div className="p-5 space-y-4">
-            
-            {/* MANUAL INPUT CONTROLS */}
-            {timerSubTab === 'Manual' && (
-              <div className="space-y-3">
-                {/* Date Display (Using DatePickerWidget) */}
-                <div className="space-y-1.5">
-                  <label className={`block text-[9px] font-display font-extrabold uppercase tracking-wider ${labelClass}`}>
-                    Date of Log
-                  </label>
-                  <DatePickerWidget
-                    startDate={parseDateStr(manualLogDate)}
-                    endDate={parseDateStr(manualLogDate)}
-                    onRangeChange={(start) => {
-                      setManualLogDate(getLocalDateString(start))
-                    }}
-                    singleDateOnly={true}
-                    variant="green-glass"
-                  />
-                </div>
-
-                {/* Time range inputs side-by-side using the custom TimePicker */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <label className={`block text-[9px] font-display font-extrabold uppercase tracking-wider ${labelClass}`}>
-                      Start Time
-                    </label>
-                    <TimePicker
-                      value={manualStartTime}
-                      onChange={setManualStartTime}
-                      variant="dark-glass"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className={`block text-[9px] font-display font-extrabold uppercase tracking-wider ${labelClass}`}>
-                      End Time
-                    </label>
-                    <TimePicker
-                      value={manualEndTime}
-                      onChange={setManualEndTime}
-                      variant="dark-glass"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Metadata Selection fields */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="sm:col-span-2 space-y-1.5">
-                <label className={`block text-[9px] font-display font-extrabold uppercase tracking-wider ${labelClass}`}>
-                  Project Name
-                </label>
-                <DropdownSelect
-                  value={timerSubTab === 'Timer' ? timerProject : manualProject}
-                  onChange={val => (timerSubTab === 'Timer' ? setTimerProject(val) : setManualProject(val))}
-                  options={projectDropdownOptions}
-                  placeholder={timerSubTab === 'Timer' ? 'Learning And Development' : 'Select Project *'}
-                  variant="dark-glass"
-                />
-              </div>
-
-              <div className="sm:col-span-1 space-y-1.5">
-                <label className={`block text-[9px] font-display font-extrabold uppercase tracking-wider ${labelClass}`}>
-                  Ticket ID
-                </label>
-                <DropdownSelect
-                  value={""}
-                  onChange={() => {}}
-                  options={ticketDropdownOptions}
-                  placeholder="Select Ticket"
-                  variant="dark-glass"
-                />
-              </div>
-            </div>
-
-            {/* Task Description */}
-            <div className="space-y-1.5">
-              <label className={`block text-[9px] font-display font-extrabold uppercase tracking-wider ${labelClass}`}>
-                Task Description
+      {/* Form Body */}
+      <form className="flex-1 overflow-visible p-5 space-y-3.5">
+        
+        {/* MANUAL LOG CONTROLS */}
+        {timerSubTab === 'Manual' && (
+          <div className="space-y-3.5">
+            <div className="space-y-1">
+              <label className="block text-[9px] font-display font-extrabold uppercase tracking-widest text-slate-400">
+                Date of Log <span className="text-rose-500">*</span>
               </label>
-              <textarea
-                rows={isExpanded ? 6 : 4}
-                value={timerSubTab === 'Timer' ? timerDescription : manualDescription}
-                onChange={e => (timerSubTab === 'Timer' ? setTimerDescription(e.target.value) : setManualDescription(e.target.value))}
-                placeholder={timerSubTab === 'Timer' ? 'What are you working on?' : 'Describe your task details in max 2000 characters *'}
-                className={textareaClass}
+              <DatePickerWidget
+                startDate={parseDateStr(manualLogDate)}
+                endDate={parseDateStr(manualLogDate)}
+                onRangeChange={(start) => {
+                  setManualLogDate(getLocalDateString(start))
+                }}
+                singleDateOnly={true}
+                variant="input-field"
+                className="w-full"
               />
             </div>
 
-            {/* Action Bottom Footer bar */}
-            <div className="flex items-center justify-between pt-1">
-              {timerSubTab === 'Timer' ? (
-                <>
-                  {/* Left: Task Badge, Play button, and digits */}
-                  <div className="flex items-center gap-3">
-                    <span className="bg-white text-zg-coral text-[9px] font-display font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-lg shadow-sm">
-                      Task
-                    </span>
-                    
-                    <button
-                      type="button"
-                      onClick={handleClockToggle}
-                      className="w-9 h-9 rounded-full bg-white text-[#10B981] flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all"
-                      title={isClockedIn ? 'Pause Recording' : 'Start Recording'}
-                    >
-                      {isClockedIn ? (
-                        <Pause className="w-4 h-4 fill-[#10B981] text-[#10B981]" />
-                      ) : (
-                        <Play className="w-4 h-4 fill-[#10B981] text-[#10B981] ml-0.5" />
-                      )}
-                    </button>
+            <div className="grid grid-cols-2 gap-3.5">
+              <div className="space-y-1">
+                <label className="block text-[9px] font-display font-extrabold uppercase tracking-widest text-slate-400">
+                  Start Time <span className="text-rose-500">*</span>
+                </label>
+                <TimePicker
+                  value={manualStartTime}
+                  onChange={setManualStartTime}
+                  variant="input-field"
+                />
+              </div>
 
-                    <span className="font-mono text-base font-black text-white tracking-wider">
-                      {formatTime(secondsTracked)}
-                    </span>
-                  </div>
-
-                  {/* Right: Reset/Undo Timer */}
-                  <div className="relative">
-                    <button 
-                      type="button"
-                      onClick={() => setSecondsTracked(0)}
-                      className="w-9 h-9 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-white hover:bg-white/25 transition-all"
-                      title="Reset Timer"
-                    >
-                      <TimerReset className="w-4.5 h-4.5" />
-                    </button>
-                    {secondsTracked > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 w-4.5 h-4.5 rounded-full bg-amber-400 text-[9px] font-black text-white flex items-center justify-center shadow-sm">
-                        1
-                      </span>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <>
-                  {/* Left: Manual Badge */}
-                  <span className="bg-white/15 border border-white/10 text-white text-[9px] font-display font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-lg">
-                    Manual Entry
-                  </span>
-
-                  {/* Right: Save & Clear buttons */}
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={saveManualLog}
-                      className="bg-white hover:bg-slate-50 text-[#10B981] text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md transition-colors active:scale-97"
-                    >
-                      Save Log
-                    </button>
-                    <button
-                      type="button"
-                      onClick={clearManualLog}
-                      className="bg-white/15 hover:bg-white/25 text-white border border-white/20 text-xs font-bold px-5 py-2.5 rounded-xl transition-colors active:scale-97"
-                    >
-                      Clear
-                    </button>
-                  </div>
-                </>
-              )}
+              <div className="space-y-1">
+                <label className="block text-[9px] font-display font-extrabold uppercase tracking-widest text-slate-400">
+                  End Time <span className="text-rose-500">*</span>
+                </label>
+                <TimePicker
+                  value={manualEndTime}
+                  onChange={setManualEndTime}
+                  variant="input-field"
+                />
+              </div>
             </div>
+          </div>
+        )}
 
+        {/* Metadata Selection */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div className="sm:col-span-2 space-y-1">
+            <label className="block text-[9px] font-display font-extrabold uppercase tracking-widest text-slate-400">
+              Project Name <span className="text-rose-500">*</span>
+            </label>
+            <DropdownSelect
+              value={timerSubTab === 'Timer' ? timerProject : manualProject}
+              onChange={val => (timerSubTab === 'Timer' ? setTimerProject(val) : setManualProject(val))}
+              options={projectDropdownOptions}
+              placeholder={timerSubTab === 'Timer' ? 'Learning And Development' : 'Select Project *'}
+              variant="input-field"
+            />
+          </div>
+
+          <div className="sm:col-span-1 space-y-1">
+            <label className="block text-[9px] font-display font-extrabold uppercase tracking-widest text-slate-400">
+              Ticket ID
+            </label>
+            <DropdownSelect
+              value={""}
+              onChange={() => {}}
+              options={ticketDropdownOptions}
+              placeholder="Select Ticket"
+              variant="input-field"
+            />
           </div>
         </div>
+
+        {/* Task Description */}
+        <div className="space-y-1">
+          <label className="block text-[9px] font-display font-extrabold uppercase tracking-widest text-slate-400">
+            Task Description
+          </label>
+          <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-xs focus-within:border-[#1490FE] focus-within:ring-4 focus-within:ring-[#1490FE]/10 transition-all bg-white">
+            <textarea
+              rows={isExpanded ? 5 : 3.5}
+              value={timerSubTab === 'Timer' ? timerDescription : manualDescription}
+              onChange={e => (timerSubTab === 'Timer' ? setTimerDescription(e.target.value) : setManualDescription(e.target.value))}
+              placeholder={timerSubTab === 'Timer' ? 'What are you working on?' : 'Describe your task details in max 2000 characters *'}
+              className="w-full bg-white px-4 py-3 text-xs text-slate-750 outline-none resize-none font-semibold leading-relaxed placeholder-slate-400"
+            />
+          </div>
+        </div>
+
+      </form>
+
+      {/* Footer Controls */}
+      <div className="px-5 py-4 border-t border-slate-100 bg-slate-50/30 flex-shrink-0 flex items-center justify-between">
+        {timerSubTab === 'Timer' ? (
+          <>
+            <div className="flex items-center gap-2.5">
+              <span className="bg-slate-100 text-slate-500 border border-slate-200 text-[8px] font-display font-black uppercase tracking-widest px-2 py-0.5 rounded-md">
+                Task
+              </span>
+              
+              <button
+                type="button"
+                onClick={() => setIsTimerRunning(!isTimerRunning)}
+                className="w-7 h-7 rounded-full bg-[#1490FE] text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                title={isTimerRunning ? 'Pause Recording' : 'Start Recording'}
+              >
+                {isTimerRunning ? (
+                  <Pause className="w-3.5 h-3.5 fill-white text-white" />
+                ) : (
+                  <Play className="w-3.5 h-3.5 fill-white text-white ml-0.5" />
+                )}
+              </button>
+
+              <span className="font-mono text-xs font-black text-slate-800 tracking-wider">
+                {formatTime(secondsTracked)}
+              </span>
+            </div>
+
+            <div className="relative">
+              <button 
+                type="button"
+                onClick={() => setSecondsTracked(0)}
+                className="w-7 h-7 rounded-full bg-white hover:bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-450 transition-all cursor-pointer shadow-xs"
+                title="Reset Timer"
+              >
+                <TimerReset className="w-4 h-4" />
+              </button>
+              {secondsTracked > 0 && (
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-amber-400 text-[8px] font-black text-white flex items-center justify-center shadow-xs">
+                  1
+                </span>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <span className="bg-slate-100 border border-slate-200 text-slate-500 text-[8px] font-display font-black uppercase tracking-widest px-2 py-0.5 rounded-md">
+              Manual Entry
+            </span>
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={saveManualLog}
+                className="bg-[#1490FE] hover:brightness-105 active:scale-98 text-white text-[11px] font-black px-4 py-2 rounded-xl shadow-[0_3px_8px_rgba(20,144,254,0.2)] transition-all cursor-pointer"
+              >
+                Save Log
+              </button>
+              <button
+                type="button"
+                onClick={clearManualLog}
+                className="bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 text-[11px] font-bold px-4 py-2 rounded-xl transition-all cursor-pointer"
+              >
+                Clear
+              </button>
+            </div>
+          </>
+        )}
       </div>
-    </>
+
+    </div>
   )
 }
+
 export default FloatingTimerWidget

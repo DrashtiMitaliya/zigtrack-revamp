@@ -13,7 +13,7 @@ interface DatePickerWidgetProps {
   viewMode?: 'Daily' | 'Weekly'
   singleDateOnly?: boolean
   className?: string
-  variant?: 'light' | 'green-glass'
+  variant?: 'light' | 'green-glass' | 'input-field'
 }
 
 export const DatePickerWidget: React.FC<DatePickerWidgetProps> = ({
@@ -189,24 +189,32 @@ export const DatePickerWidget: React.FC<DatePickerWidgetProps> = ({
     onRangeChange(newStart, singleDateOnly ? newStart : newEnd)
   }
 
-
-
   const isGreen = variant === 'green-glass'
+  const isInputField = variant === 'input-field'
 
   const shiftBtnClass = isGreen
     ? "p-1.5 hover:bg-white/10 rounded-lg text-white/80 hover:text-white transition-colors hidden sm:block"
     : "p-1.5 hover:bg-white rounded-lg text-slate-500 hover:text-slate-800 transition-colors hidden sm:block"
 
-  const triggerBtnClass = isGreen
-    ? "w-full flex items-center justify-between gap-2 px-3.5 py-2.5 bg-white/10 border border-white/10 text-white font-semibold text-xs rounded-xl shadow-xs hover:bg-white/15 transition-colors"
-    : "flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 text-slate-700 font-semibold text-xs rounded-lg shadow-xs hover:border-[#1490FE]/30 transition-colors"
+  let triggerBtnClass = ""
+  if (isGreen) {
+    triggerBtnClass = "w-full flex items-center justify-between gap-2 px-3.5 py-2.5 bg-white/10 border border-white/10 text-white font-semibold text-xs rounded-xl shadow-xs hover:bg-white/15 transition-colors cursor-pointer"
+  } else if (isInputField) {
+    triggerBtnClass = `w-full flex items-center justify-between gap-2 px-4 py-3.5 bg-slate-50/70 border ${showDatePicker ? 'border-[#1490FE] ring-4 ring-[#1490FE]/10 bg-white' : 'border-slate-200 hover:border-slate-350'} text-slate-850 font-bold text-xs rounded-2xl shadow-xs transition-all cursor-pointer`
+  } else {
+    triggerBtnClass = "flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 text-slate-700 font-semibold text-xs rounded-lg shadow-xs hover:border-[#1490FE]/30 transition-colors cursor-pointer"
+  }
 
   const calendarIconColor = isGreen ? "text-white" : "text-[#1490FE]"
   const chevronIconColor = isGreen ? "text-white/60" : "text-slate-400"
 
+  const containerClass = isGreen || isInputField
+    ? `relative ${className}`
+    : `relative flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200 ${className}`
+
   return (
-    <div className={isGreen ? `relative ${className}` : `relative flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200 ${className}`}>
-      {!isGreen && (
+    <div className={containerClass}>
+      {!isGreen && !isInputField && (
         <button
           type="button"
           onClick={() => shiftRange('prev')}
@@ -233,7 +241,7 @@ export const DatePickerWidget: React.FC<DatePickerWidgetProps> = ({
         <ChevronDown className={`w-3.5 h-3.5 ${chevronIconColor}`} />
       </button>
 
-      {!isGreen && (
+      {!isGreen && !isInputField && (
         <button
           type="button"
           onClick={() => shiftRange('next')}

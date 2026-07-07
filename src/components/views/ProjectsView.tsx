@@ -164,12 +164,14 @@ export const ProjectsView: React.FC = () => {
                   onChange={v => { setProjectStatusFilter(v); setProjectPage(1) }}
                   options={STATUS_OPTIONS}
                   id="project-status-filter"
+                  className="w-40 sm:w-44"
                 />
                 <DropdownSelect
                   value=""
                   onChange={() => {}}
                   options={COST_TYPE_OPTIONS}
                   id="project-type-filter"
+                  className="w-40 sm:w-44"
                 />
               </>
             }
@@ -191,7 +193,22 @@ export const ProjectsView: React.FC = () => {
             }
           />
 
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+            {/* Project statistics banner */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { label: 'Total Projects', value: projects.length, color: 'text-blue-700 bg-blue-50 border-blue-100' },
+                { label: 'In Progress', value: projects.filter(p => p.status === 'In Progress').length, color: 'text-amber-700 bg-amber-50 border-amber-100' },
+                { label: 'Completed', value: projects.filter(p => p.status === 'Completed').length, color: 'text-emerald-700 bg-emerald-50 border-emerald-100' },
+                { label: 'Total Hours Spent', value: `${Math.round(projects.reduce((acc, p) => acc + parseFloat(p.timeSpent.split(':')[0]), 0))} hrs`, color: 'text-purple-700 bg-purple-50 border-purple-100' }
+              ].map((stat, i) => (
+                <div key={i} className={`p-4 rounded-2xl border flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.01)] hover:shadow-xs hover:scale-[1.01] transition-all duration-250 ${stat.color}`}>
+                  <span className="text-[10px] font-display font-black uppercase tracking-widest opacity-70">{stat.label}</span>
+                  <span className="text-xl font-mono font-black mt-1.5">{stat.value}</span>
+                </div>
+              ))}
+            </div>
+
             {/* Responsive grid: 1 → 2 → 3 cols */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
               {paginatedProjects.map(project => (
@@ -230,12 +247,14 @@ export const ProjectsView: React.FC = () => {
                   onChange={setPrProjectFilter}
                   options={prProjectOptions}
                   id="pr-project-filter"
+                  className="w-40 sm:w-44"
                 />
                 <DropdownSelect
                   value={prStatusFilter}
                   onChange={setPrStatusFilter}
                   options={PR_STATUS_OPTIONS}
                   id="pr-status-filter"
+                  className="w-40 sm:w-44"
                 />
               </>
             }

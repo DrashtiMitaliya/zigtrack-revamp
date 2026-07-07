@@ -4,7 +4,7 @@ import { Clock } from 'lucide-react'
 interface TimePickerProps {
   value: string // 24-hour style e.g. "14:30" or ""
   onChange: (val: string) => void
-  variant?: 'light' | 'dark-glass' | 'small'
+  variant?: 'light' | 'dark-glass' | 'small' | 'input-field'
   className?: string
   id?: string
   placeholder?: string
@@ -91,6 +91,9 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
   if (variant === 'light') {
     btnClass += `bg-slate-50 border ${isOpen ? 'border-[#1490FE] ring-2 ring-[#1490FE]/15 bg-white' : 'border-slate-200 hover:border-slate-300'} text-slate-700`
+  } else if (variant === 'input-field') {
+    btnClass = `w-full flex items-center justify-between font-mono font-semibold text-xs py-3.5 px-4 rounded-2xl bg-slate-50/70 border ${isOpen ? 'border-[#1490FE] ring-4 ring-[#1490FE]/10 bg-white' : 'border-slate-200 hover:border-slate-300'} text-slate-800 outline-none cursor-pointer transition-all text-left`
+    iconColor = "text-slate-400"
   } else if (variant === 'dark-glass') {
     btnClass += `bg-white/10 border ${isOpen ? 'border-[#10B981]/50 bg-white/15' : 'border-white/10 hover:bg-white/15'} text-white`
     iconColor = "text-white/60"
@@ -106,7 +109,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
   const itemClass = (isActive: boolean) => {
     if (isActive) {
-      return 'w-full py-1.5 px-2.5 text-center text-xs font-black bg-[#10B981] text-white rounded-lg shadow-sm transition-all'
+      return 'w-full py-1.5 px-2.5 text-center text-xs font-black bg-[#1490FE] text-white rounded-lg shadow-sm transition-all'
     }
     return variant === 'dark-glass'
       ? 'w-full py-1.5 px-2.5 text-center text-xs font-bold text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors'
