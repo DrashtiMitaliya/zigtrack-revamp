@@ -328,7 +328,7 @@ export const TimesheetView: React.FC = () => {
         rightSlot={
           <>
             <Button
-              variant="danger"
+              variant="primary"
               size="sm"
               onClick={() => {}}
             >

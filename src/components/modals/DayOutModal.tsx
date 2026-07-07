@@ -106,7 +106,7 @@ export const DayOutModal: React.FC = () => {
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 max-h-[calc(100vh-180px)] overflow-y-auto scrollbar-thin">
           {/* Stats Cards Row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             

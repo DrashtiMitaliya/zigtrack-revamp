@@ -183,7 +183,7 @@ export const ProjectsView: React.FC = () => {
                   placeholder="Search by Project Name"
                   className="w-44 sm:w-52"
                 />
-                <Button variant="danger" size="sm" onClick={() => {}}>
+                <Button variant="primary" size="sm" onClick={() => {}}>
                   Apply Filter
                 </Button>
                 <Button variant="ghost" size="sm" onClick={clearProjectFilters}>
@@ -266,7 +266,7 @@ export const ProjectsView: React.FC = () => {
                   placeholder="Search by title"
                   className="w-44 sm:w-52"
                 />
-                <Button variant="danger" size="sm" onClick={() => {}}>
+                <Button variant="primary" size="sm" onClick={() => {}}>
                   Apply Filter
                 </Button>
                 <Button variant="ghost" size="sm" onClick={clearPRFilters}>

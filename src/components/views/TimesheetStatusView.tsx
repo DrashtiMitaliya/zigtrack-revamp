@@ -321,7 +321,7 @@ export const TimesheetStatusView: React.FC = () => {
         rightSlot={
           <div className="flex items-center gap-2">
             <Button
-              variant="danger"
+              variant="primary"
               size="sm"
               onClick={handleApplyFilter}
             >
@@ -390,14 +390,17 @@ export const TimesheetStatusView: React.FC = () => {
                           {entry.reason || '—'}
                         </div>
                         <div className="col-span-1 flex justify-center">
-                          <button
+                          <Button
                             type="button"
                             onClick={() => setSelectedEntry(entry)}
-                            className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-200 text-slate-400 hover:text-[#FF6347] hover:border-[#FF6347]/30 hover:bg-[#FF6347]/5 flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
+                            variant="ghost"
+                            size="sm"
+                            iconOnly
+                            className="bg-slate-50 border border-slate-200 text-slate-400 hover:text-[#FF6347] hover:border-[#FF6347]/30 hover:bg-[#FF6347]/5 cursor-pointer active:scale-95"
                             aria-label={`View breakdown for week: ${entry.weekRange}`}
                           >
                             <Eye className="w-4 h-4" />
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     ))}
@@ -441,14 +444,17 @@ export const TimesheetStatusView: React.FC = () => {
                   {selectedEntry.weekRange}
                 </p>
               </div>
-              <button
+              <Button
                 type="button"
                 onClick={() => setSelectedEntry(null)}
-                className="w-7 h-7 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
+                variant="ghost"
+                size="sm"
+                iconOnly
+                className="hover:bg-slate-200 text-slate-400 hover:text-slate-700 cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
 
             {/* Modal Body */}

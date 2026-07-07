@@ -11,7 +11,7 @@ import {
   GitPullRequest
 } from 'lucide-react'
 import type { PRRequest } from '../../constants'
-import { DropdownSelect, DatePickerWidget, TimePicker } from '../common'
+import { DropdownSelect, DatePickerWidget, TimePicker, Button } from '../common'
 
 interface AddEditPRPanelProps {
   isOpen: boolean
@@ -313,20 +313,24 @@ export const AddEditPRPanel: React.FC<AddEditPRPanelProps> = ({
 
           {/* Footer Buttons */}
           <div className="px-6 py-4 border-t border-slate-100 flex items-center gap-3 bg-slate-50/30 flex-shrink-0">
-            <button
+            <Button
               type="submit"
               onClick={handleSubmit}
-              className="flex-1 bg-gradient-to-r from-[#1490FE] to-blue-600 hover:brightness-105 active:scale-98 text-white font-bold text-xs py-3.5 px-4 rounded-xl shadow-[0_4px_12px_rgba(20,144,254,0.25)] hover:shadow-[0_4px_20px_rgba(20,144,254,0.4)] transition-all"
+              variant="primary"
+              size="lg"
+              className="flex-1 rounded-xl shadow-[0_4px_12px_rgba(20,144,254,0.25)] hover:shadow-[0_4px_20px_rgba(20,144,254,0.4)]"
             >
               Save
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-white hover:bg-slate-100 border border-slate-200 active:scale-98 text-slate-600 font-bold text-xs py-3.5 px-4 rounded-xl transition-all"
+              variant="ghost"
+              size="lg"
+              className="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 rounded-xl"
             >
               Cancel
-            </button>
+            </Button>
           </div>
 
         </div>

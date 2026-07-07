@@ -18,7 +18,7 @@ import {
 } from 'lucide-react'
 import type { Project } from '../../constants'
 import { initialPRRequests } from '../../constants'
-import { StatusBadge } from '../common'
+import { StatusBadge, Button } from '../common'
 
 interface ProjectDetailViewProps {
   project: Project
@@ -145,13 +145,17 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
         
         {/* Project Selector / Name with Left Back Button */}
         <div className="flex items-center gap-3 relative">
-          <button
+          <Button
             onClick={onBack}
-            className="w-9 h-9 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-500 border border-slate-200 flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-xs cursor-pointer"
+            variant="ghost"
+            size="sm"
+            iconOnly
+            className="bg-slate-50 hover:bg-slate-100 text-slate-500 border border-slate-200 rounded-xl cursor-pointer"
             title="Go back to projects list"
+            aria-label="Go back to projects list"
           >
             <ArrowLeft className="w-4 h-4" />
-          </button>
+          </Button>
 
           <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-extrabold shadow-sm" style={{ backgroundColor: project.color }}>
             {project.name.charAt(0)}

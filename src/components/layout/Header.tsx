@@ -74,9 +74,12 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           )}
         </div>
 
-        <h1 className="font-display font-bold text-[16px] text-slate-800 tracking-tight truncate">
-          {(activeTab === 'Timesheet' || activeTab === 'Timesheet Manage') ? 'Task Time Log' : activeTab}
-        </h1>
+        {/* Left spacing / Page title */}
+        {activeTab && (
+          <h2 className="hidden sm:block text-[15px] font-display font-black text-slate-800 tracking-tight leading-none truncate pr-2">
+            {activeTab === 'Timesheet Manage' ? 'Task Time Log' : activeTab === 'Clock In/Out' ? 'Clock In / Out' : activeTab}
+          </h2>
+        )}
       </div>
 
       {/* ── Right controls ──────────────────────── */}
@@ -158,9 +161,9 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           <FloatingTimerWidget />
         </div>
 
-        {/* Notification bell */}
+        {/* Notification bell - hidden on narrow screens */}
         <button
-          className="relative p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors flex-shrink-0 cursor-pointer"
+          className="relative p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors flex-shrink-0 cursor-pointer hidden sm:block"
           aria-label="Notifications"
         >
           <Bell className="w-[18px] h-[18px]" />
